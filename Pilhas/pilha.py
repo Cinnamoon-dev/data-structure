@@ -39,10 +39,10 @@ class Pilha :
             aux = aux.prox
 
 
-nome_one = Pilha('Pedro', None)
-nome_two = Pilha('Henrique', nome_one)
-nome_three = Pilha('Barreto', nome_two)
-nome_four = Pilha('Freires', nome_three)
+nome_one = Pilha('Pen', None)
+nome_two = Pilha('Apple', nome_one)
+nome_three = Pilha('Apple', nome_two)
+nome_four = Pilha('Pen', nome_three)
 
 nome_four.list()
 

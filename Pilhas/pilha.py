@@ -21,7 +21,7 @@ class Pilha :
 
         apagado = self.dado
 
-        if self.prox:
+        if not self.prox:
             self.dado = None
             self.prox = None
         else:
@@ -39,13 +39,13 @@ class Pilha :
             aux = aux.prox
 
 
-nome_one = Pilha('Pen', None)
-nome_two = Pilha('Apple', nome_one)
-nome_three = Pilha('Apple', nome_two)
-nome_four = Pilha('Pen', nome_three)
+my_pilha = Pilha('Pen', None)
 
-nome_four.list()
+my_pilha.push('carro')
+my_pilha.push('tapete')
+my_pilha.push('lampada')
+my_pilha.push('computador')
 
+my_pilha.pop()
 
-nome_four.pop()
-
+my_pilha.list()

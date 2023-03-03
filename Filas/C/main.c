@@ -3,7 +3,7 @@
 
 typedef struct
 {
-    int dado;
+    int dado; // void *dado;
     struct celula* prox;
 
 }celula;

@@ -51,3 +51,67 @@ class Pilha:
 
         for i in array:
             self.insert(i)
+    
+    #Q4
+    def peakElementar(self):
+        peak = self.pop()
+        self.insert(peak)
+        
+        return peak
+
+    def peakDiverso(self):
+        return self.dado
+    
+    #Q5
+    def isEmptyElementar(self):
+        dadoAtual = self.pop()
+
+        if dadoAtual is None:
+            return True
+        
+        self.insert(dadoAtual)
+        return False
+    
+    def isEmptyDiverso(self):
+        if self.dado is None:
+            return True
+        
+        return False
+    
+    #Q6
+    def lengthElementar(self):
+        pilhaAux = Pilha(self.dado, self.prox)
+        counter = 0
+
+        while pilhaAux.dado is not None:
+            pilhaAux.pop()
+            counter += 1
+        
+        return counter
+    
+    def lengthDiverso(self):
+        pilhaAux = Pilha(self.dado, self.prox)
+        counter = 0
+
+        while pilhaAux.dado is not None:
+            pilhaAux.dado = pilhaAux.prox.dado
+            pilhaAux.prox = pilhaAux.prox.prox
+            counter += 1
+        
+        return counter
+
+    #Q7
+    def lastElementar(self):
+        last = self.pop()
+        self.insert(last)
+        return last
+    
+    def lastDiverso(self):
+        return self.dado
+    
+    #Q8
+    def getValueByIndex(self, value=None):
+        if value == None:
+            return None
+        
+        

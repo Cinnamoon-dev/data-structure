@@ -254,11 +254,23 @@ class Pilha :
         return self
     
     # Q13 Elementar Remove All values of my stack 
-    def removeAll(self):
+    def removeAllElementar(self):
         aux = self
 
         while aux.pop() is not None:
             continue 
+    
+        return self
+
+     # Q13 Generic Remove All values of my stack 
+    def removeAllGeneric(self):
+        aux = self
+        new_pointer = None
+
+        while aux.dado is not None:
+            new_pointer = aux.prox
+            del(aux)
+            aux = new_pointer
     
         return self
 
@@ -294,6 +306,7 @@ print("Pegando todos os valores dos indices [3:5] elementar" + str(my_pilha.getV
 print("Pegando todos os valores dos indices [3:5] generico" + str(my_pilha.getValuesBySliceGeneric(3,5)))
 
 
-my_pilha.removeAll()
+my_pilha.removeAllGeneric()
 print("Minha pilha esta vazia ? >> " + str(my_pilha.isEmptyElementar()))
 my_pilha.list()
+

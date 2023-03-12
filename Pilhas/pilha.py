@@ -41,7 +41,7 @@ class Pilha :
     def list(self):
         aux = self
 
-        while aux.dado is not None :
+        while aux is not None :
             print( aux.dado )
             aux = aux.prox
 
@@ -140,6 +140,10 @@ class Pilha :
         counter = 0
 
         while aux.dado != dado:
+
+            if aux.prox is None:
+                return -1
+            
             aux = aux.prox
             counter += 1
 
@@ -163,8 +167,10 @@ class Pilha :
         counter = 0
 
         while aux.prox != None:
+
             if aux.dado == dado:
                 result.append(counter)
+            
             aux = aux.prox
             counter += 1
         
@@ -244,14 +250,6 @@ class Pilha :
             result.append(self.getValueByIndexElementar(index))
 
         return result
-
-
-    # Q13 Elementar Remove All values of my stack # POSSIBLE ANSWER !!
-    def removeAllFunny(self):
-        self.dado = None
-        self.prox = None
-
-        return self
     
     # Q13 Elementar Remove All values of my stack 
     def removeAllElementar(self):
@@ -262,51 +260,204 @@ class Pilha :
     
         return self
 
-     # Q13 Generic Remove All values of my stack 
+    # Q13 Elementar Remove All values of my stack # POSSIBLE ANSWER !!
     def removeAllGeneric(self):
+        self.dado = None
+        self.prox = None
+
+        return self
+    
+    # Q14 Elementar Remove a specific value in a determinate index
+    def removeByIndexElementar(self ,index):
         aux = self
-        new_pointer = None
+        counter = 0
+
+        while counter != index:
+            aux = aux.prox
+            counter += 1
+
+        last_data_storaged = aux.dado
+        aux.dado = aux.prox.dado
+        aux.prox = aux.prox.prox
+
+        return last_data_storaged
+    
+    # Q14 Generic Remove a specific value in a determinate index
+    def removeByIndexGenerico(self ,index):
+        
+        aux = self
+        dado_for_remove = self.getValueByIndexGeneric(index)
+
+        while aux.dado != dado_for_remove:
+            aux = aux.prox
+
+        aux.dado = aux.prox.dado
+        aux.prox = aux.prox.prox
+        
+        return dado_for_remove
+    
+    # Q15 Generic Remove the first data that has equal dado value 
+    def removeFirstElementByValueElementar(self, dado):
+        aux = self
+
+        while aux.dado != dado:
+            aux = aux.prox
+        
+        # remove o primeiro elemento que ele encontrar
+        removed_element = aux.dado
+        aux.dado = aux.prox.dado
+        aux.prox = aux.prox.prox
+
+        return removed_element
+    
+    # Q15 Generic Remove the first data that has equal dado value        
+    def removeFirstElementByValueGenerico(self,dado):
+
+        aux = self
+        index_for_remove = aux.getAllIndexByValueElementar(dado)[0] # take the first element for remove 
+        counter = 0 
+
+        while counter != index_for_remove:
+            aux = aux.prox
+            counter += 1
+
+        removed_element = aux.dado
+        aux.dado = aux.prox.dado
+        aux.prox = aux.prox.prox
+
+        return removed_element
+
+    # Q16 Elementar Remove all datas with a specific value
+    def removeAllByValueElementar(self, value):
+        aux = self 
 
         while aux.dado is not None:
-            new_pointer = aux.prox
-            del(aux)
-            aux = new_pointer
+            
+            if aux.dado == value:
+                aux.pop()
+                continue
+
+            aux = aux.prox
+
+        return True
     
-        return self
+    # Q16 Generic Remove all datas with a specific value
+    def removeAllByValueGeneric(self, value):
+        qtd_itens = self.tamanhoDaPilhaElementar()
+        counter = 0
 
+        while counter != qtd_itens: 
 
-my_pilha = Pilha('Pen', None)
-my_pilha.pop()
+            index_to_remove = self.getIndexByValueElementar(value) 
 
-my_pilha.pushWithClassLinkedList('Ola')
-my_pilha.pushWithClassLinkedList('Mundo')
-my_pilha.pushWithClassLinkedList('Cruel')
-my_pilha.pushWithClassLinkedList('Pedro')
-my_pilha.pushWithClassLinkedList('hey')
-my_pilha.pushWithClassLinkedList('teste')
-my_pilha.pushWithClassLinkedList('teste')
-my_pilha.pushWithClassLinkedList('teste')
+            if index_to_remove == -1:
+                return True
+            
+            self.removeByIndexElementar(index_to_remove)
+            counter += 1 
 
-print("Esta Vazio ? >>" + str(my_pilha.isEmptyElementar()))
-print(" Elementar First Element >>" + my_pilha.peakElementar())
-print("Tamanho da minha estrutura Elementar>>" + str(my_pilha.tamanhoDaPilhaElementar()))
-print("Tamanho da minha estrutura Generico>>" + str(my_pilha.tamanhoDaPilhaGeneric()))
-print("Ultimo elemento da minha estrutura elementar >>" + str(my_pilha.lastElementElementar()))
-print("Ultimo elemento da minha estrutura generico >>" + str(my_pilha.lastElementGeneric()))
-print("Fazendo um get elementar no indice 2 >>" + str(my_pilha.getValueByIndexElementar(2)))
-print("Fazendo um get generic no indice 2 >>" + str(my_pilha.getValueByIndexGeneric(2)))
-print("Fazendo uma pesquisa elementar na pilha por Ola>>" + str(my_pilha.getIndexByValueElementar("Ola")))
-print("Fazendo uma pesquisa generica na pilha por Ola>>" + str(my_pilha.getIndexByValueGeneric("Ola")))
-print("Fazendo uma pesquisa dos indices de Pedro elementar na pilha>>" + str(my_pilha.getIndexByValueGeneric("Pedro")))
-print("Fazendo uma pesquisa em todos os  indices por teste elementar>> " + str(my_pilha.getAllIndexByValueElementar("teste")))
-print("Fazendo uma pesquisa em todos os  indices por teste generico>> " + str(my_pilha.getAllIndexByValueGenerico("teste")))
-print("Fazendo uma pesquisa em todos os valores por um array de indexs  elementar[3,1]>> " + str(my_pilha.getValuesByIndexsElementar([3,1])))
-print("Fazendo uma pesquisa em todos os valores por um array de indexs  generico [3,1]>> " + str(my_pilha.getValuesByIndexsGenerico([3,1])))
-print("Pegando todos os valores dos indices [3:5] elementar" + str(my_pilha.getValuesBySliceElementar(3,5)))
-print("Pegando todos os valores dos indices [3:5] generico" + str(my_pilha.getValuesBySliceGeneric(3,5)))
+        return True
+    
+    # Q17 Elementar Remove all datas with a specific index
+    def removeAllByIndexesElementar(self, indexs):
+        
+        aux = self 
+        counter  = 0
 
+        for index in indexs:
+            
+            while index != counter:
+                aux = aux.prox 
+                counter += 1   
 
-my_pilha.removeAllGeneric()
-print("Minha pilha esta vazia ? >> " + str(my_pilha.isEmptyElementar()))
-my_pilha.list()
+            aux.pop()
+            counter = 0
+            aux = self 
 
+        return True
+    
+    # Q17 Generico Remove all datas with a specific index
+    def removeAllByIndexesGeneric(self, indexs):
+
+        for index in indexs:
+            self.removeByIndexElementar(index)
+
+        return True
+    
+    # Q18 Elementar Remove all datas starting in start and close in end
+    def removeAllBySlice(self, start, end):
+        counter = 0
+        aux = self
+
+        while counter != end :
+
+            if counter >= start:
+                aux.pop()
+
+            counter += 1
+            aux = aux.prox
+
+        return True
+
+    # Q18 Generic Remove all datas starting in start and close in end
+    def removeAllBySlice(self, start, end):
+
+        for index in range(start, end):
+            self.removeByIndexElementar(self.getValueByIndexElementar(index))
+
+        return True
+    
+    # Q19 Elementar Assignment a value for a specific index
+    def setValueInIndexElementar(self, index:int, value:str) -> bool:
+
+        aux = self
+        counter = 0
+
+        while counter != index:
+            counter += 1
+            aux = aux.prox
+
+        
+        aux.dado = value
+        
+        return True
+
+    # Q19 Generic Assignment a value for a specific index
+    def setValueInIndexGeneric(self, index, value):
+        aux = self
+    
+        for index in range(index):
+            aux = aux.prox 
+
+        aux.dado = value
+        return True
+
+    # Q20 Elementar Change my stack values with a list of values and a list of indexs 
+    def setValuesInIndexesElementar(self ,indexs, elements):
+        aux = self
+        counter_one = 0
+        counter_two = 0
+
+        limite_loops = len(indexs)
+
+        while counter_two < limite_loops:
+            counter_two += 1
+
+            while counter_one != indexs[counter_two - 1]:
+                aux = aux.prox 
+                counter_one += 1 
+
+            aux.dado = elements[counter_one]
+            counter_one = 0
+
+        return True
+    
+    # Q20 Generico Change my stack values with a list of values and a list of indexs 
+    def setValuesInIndexesGenerico(self ,indexs, elements):
+        counter_one = 0
+
+        for index in indexs:
+            self.setValueInIndexGeneric(index,elements[counter_one])
+            counter_one += 1
+
+        return True

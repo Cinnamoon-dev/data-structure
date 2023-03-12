@@ -1,9 +1,7 @@
 class No:
-
     def __init__(self, data = None ):
         self.data = data
         self.next = None
-
 
 class Fila:
     

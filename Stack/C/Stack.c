@@ -12,40 +12,40 @@ node* create_node() {
     return new;
 }
 
-void push(node** list, int data) {
+void push(node** stack, int data) {
     node* new = create_node();
 
-    if((*list) == NULL) {
+    if((*stack) == NULL) {
         new->data = data;
         new->next = NULL;
 
-        (*list) = new;
+        (*stack) = new;
         return;
     }
 
     new->data = data;
-    new->next = list;
-    list = new;
+    new->next = (*stack);
+    (*stack) = new;
 
     return;
 }
 
-int pop(node** list) {
-    if((*list) == NULL) {
+int pop(node** stack) {
+    if((*stack) == NULL) {
         return NULL;
     }
 
-    node* aux = (*list);
-    int value = (*list)->data;
+    node* aux = (*stack);
+    int value = (*stack)->data;
     
-    (*list) = (*list)->next;
+    (*stack) = (*stack)->next;
     free(aux);
 
     return value;
 }
 
-void print(node* list) {
-    node* aux = list;
+void print(node* stack) {
+    node* aux = stack;
 
     while(aux != NULL) {
         printf("%d\n", aux->data);
@@ -54,18 +54,18 @@ void print(node* list) {
     printf("\n");
 }
 
-void array_push(node** list, int* data, int size) {
+void array_push(node** stack, int* data, int size) {
     for (register int i = 0; i < size; i++) {
-        push(&list, data[i]);
+        push(&stack, data[i]);
     }
 }
 
-int peak(node* list) {
-    return list->data;
+int peak(node* stack) {
+    return stack->data;
 }
 
-bool is_empty(node *list) {
-    if(list == NULL) {
+bool is_empty(node *stack) {
+    if(stack == NULL) {
         return true;
     }
     return false;
@@ -83,20 +83,45 @@ int length(node* stack) {
     return counter;
 }
 
+int last(node* stack) {
+    node* aux = stack;
+
+    while(aux->next != NULL) {
+        aux = aux->next;
+    }
+
+    return aux->data;
+}
+
+int get_value_by_index(node* stack, int index) {
+    node* new_stack = NULL;
+    int aux, value, counter = 0;
+    bool condition = true;
+
+    while(stack != NULL) {
+        push(&new_stack, pop(stack));
+    }
+
+    while(new_stack != NULL) {
+        if(condition) {
+            aux = pop(new_stack);
+        }
+        
+        if(counter == index) {
+
+        }
+    }
+}
+
 int main() {
     node *stack = NULL;
 
     push(&stack, 1);
-    // list = insert_node(list, 2);
-    // list = insert_node(list, 3);
-    // list = insert_node(list, 4);
-    // list = insert_node(list, 5);
+    push(&stack, 2);
+    push(&stack, 3);
+    push(&stack, 4);
+    push(&stack, 5);
     print(stack);
-
-    // list = delete_node(list);
-    // list = delete_node(list);
-    // list = delete_node(list);
-    // print(list);
-
+    printf("%d\n", last(stack));
     return 0;
 }

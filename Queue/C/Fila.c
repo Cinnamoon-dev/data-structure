@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct {
+typedef struct _celula {
     int dado;
-    struct celula* prox;
+    struct _celula* prox;
 } celula;
 
 celula* createCelula( int dado, celula* prox )
@@ -15,20 +15,19 @@ celula* createCelula( int dado, celula* prox )
     return ptr;
 }
 
-celula* insertData( celula* fila_celulas, int dado)
+void insertData( celula** fila_celulas, int dado)
 {
-    celula* aux = fila_celulas;
+    celula* aux = *fila_celulas;
 
     while ( aux->prox != NULL )
     {
         aux = aux->prox;
     }
 
-    celula* new_celula = createCelula(dado, NULL);
+    celula* new_celula = createCelula( dado, NULL );
     aux->prox = new_celula;
 
-
-    return fila_celulas;
+    return ;
 }
 
 void listData( celula* fila_pointer )
@@ -60,11 +59,11 @@ int main()
 {
     celula* f_ptr = createCelula(100, NULL);
 
-    f_ptr = insertData(f_ptr, 120);
-    f_ptr = insertData(f_ptr, 140);
-    f_ptr = insertData(f_ptr, 160);
+    insertData( &f_ptr, 120 );
+    insertData( &f_ptr, 140 );
+    insertData( &f_ptr, 160 );
 
-    listData(f_ptr);
+    listData( f_ptr );
 
     printf(">>%d, deleted\n", delete(&f_ptr));
     printf(">>%d, deleted\n", delete(&f_ptr));

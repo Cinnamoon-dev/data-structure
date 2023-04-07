@@ -102,11 +102,11 @@ int get_value_by_index(node* stack, int index) {
     bool found = false;
 
     while(stack != NULL) {
-        push(&new_stack, pop(stack));
+        push(&new_stack, pop(&stack));
     }
 
     while(new_stack != NULL) {
-        aux = pop(new_stack);
+        aux = pop(&new_stack);
         push(&stack, aux);        
         
         if(counter == index) {
@@ -117,11 +117,62 @@ int get_value_by_index(node* stack, int index) {
         counter++;
     }
 
-    if(counter == index && found == false) {
+    if(found == false) {
         return -1;
     }
 
     return value;
+}
+
+int get_index_by_value(node* stack, int value) {
+    node* new_stack = NULL;
+    int aux, index, counter = 0;
+    bool found = false;
+
+    while(stack != NULL) {
+        push(&new_stack, pop(&stack));
+    }
+
+    while(new_stack != NULL) {
+        aux = pop(&new_stack);
+        push(&stack, aux);
+
+        if(aux == value) {
+            found = true;
+            index = counter;
+        }
+        counter++;
+    }
+
+    if(found == false) {
+        return -1;
+    }
+
+    return index;
+}
+
+int* get_all_indexes_by_value(node* stack, int value) {
+    node* new_stack = NULL;
+    int* indexes = NULL;
+    int aux, counter = 0, array_counter = 0;
+
+    while(stack != NULL) {
+        push(&new_stack, pop(&stack));
+    }
+
+    while(new_stack != NULL) {
+        aux = pop(&new_stack);
+
+        if(aux == value) {
+            indexes = malloc(sizeof(int));
+            *(indexes + array_counter) = aux;
+            array_counter++;
+        }
+
+        counter++;
+    }
+
+    return indexes;
 }
 
 int main() {
@@ -133,6 +184,8 @@ int main() {
     push(&stack, 4);
     push(&stack, 5);
     print(stack);
-    printf("%d\n", last(stack));
+    pop(&stack);
+    printf("valor = %d\n", get_value_by_index(stack, 5));
+    print(stack);
     return 0;
 }

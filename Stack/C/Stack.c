@@ -30,6 +30,21 @@ void push(node** stack, int data) {
     return;
 }
 
+void push_array(node** stack, int* data, int size) {
+    for (register int i = 0; i < size; i++) {
+        push(&stack, data[i]);
+    }
+}
+
+void push_node(node** stack, node* data) {
+    node* aux = data;
+
+    while(aux != NULL) {
+        push(&stack, aux->data);
+        aux = aux->next;
+    }
+}
+
 int pop(node** stack) {
     if((*stack) == NULL) {
         return NULL;
@@ -52,12 +67,6 @@ void print(node* stack) {
         aux = aux->next;
     }
     printf("\n");
-}
-
-void array_push(node** stack, int* data, int size) {
-    for (register int i = 0; i < size; i++) {
-        push(&stack, data[i]);
-    }
 }
 
 int peak(node* stack) {
@@ -84,33 +93,35 @@ int length(node* stack) {
 }
 
 int last(node* stack) {
-    node* aux = stack;
-
-    while(aux->next != NULL) {
-        aux = aux->next;
-    }
-
-    return aux->data;
+    return peak(stack);
 }
 
 int get_value_by_index(node* stack, int index) {
     node* new_stack = NULL;
     int aux, value, counter = 0;
-    bool condition = true;
+    bool found = false;
 
     while(stack != NULL) {
         push(&new_stack, pop(stack));
     }
 
     while(new_stack != NULL) {
-        if(condition) {
-            aux = pop(new_stack);
-        }
+        aux = pop(new_stack);
+        push(&stack, aux);        
         
         if(counter == index) {
-
+            value = aux;
+            found = true;
         }
+        
+        counter++;
     }
+
+    if(counter == index && found == false) {
+        return -1;
+    }
+
+    return value;
 }
 
 int main() {

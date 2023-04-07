@@ -128,6 +128,8 @@ class Pilha:
         return self.dado
     
     #Q8
+    # Cria-se uma pilha auxiliar com os valores de self, ordena-se os indices dessa pilha inserindo em
+    # outra pilha e vai-se comparando até chegar ao resultado e então se retorna ele ou None caso não encontre
     def getValueByIndexElementar(self, index):
         if self.dado is None:
             return None
@@ -173,6 +175,8 @@ class Pilha:
         return None
     
     #Q9
+    # Clona a pilha atual em outra, vai passando por cada valor e vai incrementando o contador do index
+    # caso a var de controle "found" seja falso, vai retornar None
     def getIndexByValueElementar(self, value=None):
         if value == None:
             return None
@@ -217,6 +221,8 @@ class Pilha:
         return None
 
     #Q10
+    # Cria uma pilha aux, e vai passando por cada elemento dela, caso o valor seja igual o indice é 
+    # adicionado a uma lista e ela é retornada
     def getAllIndexByValueElementar(self, value):
         if value == None:
             return []

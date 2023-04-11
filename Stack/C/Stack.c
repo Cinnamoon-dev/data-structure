@@ -124,10 +124,10 @@ int get_value_by_index(node* stack, int index) {
     return value;
 }
 
-int get_index_by_value(node* stack, int value) {
+int* get_index_by_value(node* stack, int value) {
     node* new_stack = NULL;
-    int aux, index, counter = 0;
-    bool found = false;
+    int aux, counter = 0;
+    int* index = NULL;
 
     while(stack != NULL) {
         push(&new_stack, pop(&stack));
@@ -138,14 +138,10 @@ int get_index_by_value(node* stack, int value) {
         push(&stack, aux);
 
         if(aux == value) {
-            found = true;
+            index = malloc(sizeof(int));
             index = counter;
         }
         counter++;
-    }
-
-    if(found == false) {
-        return -1;
     }
 
     return index;
@@ -153,7 +149,7 @@ int get_index_by_value(node* stack, int value) {
 
 int* get_all_indexes_by_value(node* stack, int value) {
     node* new_stack = NULL;
-    int* indexes = NULL;
+    int* indexes = malloc(sizeof(int));
     int aux, counter = 0, array_counter = 0;
 
     while(stack != NULL) {
@@ -164,7 +160,7 @@ int* get_all_indexes_by_value(node* stack, int value) {
         aux = pop(&new_stack);
 
         if(aux == value) {
-            indexes = malloc(sizeof(int));
+            indexes = realloc(indexes, (array_counter + 1) * sizeof(int));
             *(indexes + array_counter) = aux;
             array_counter++;
         }

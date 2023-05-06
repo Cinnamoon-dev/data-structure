@@ -3,12 +3,13 @@ class Fila: # index 0 = começo , index n = final
         self.dado = dado
         self.prox = prox
     
-    def push(self, dado=None): # Entra no final
+    def push(self, dado=None):
         if dado is None:
             return
         
         if self.dado is None:
             self.dado = dado
+            self.prox = None
             return
 
         f = Fila(dado, None)
@@ -18,6 +19,13 @@ class Fila: # index 0 = começo , index n = final
             filaAux = filaAux.prox
 
         filaAux.prox = f
+
+    def pushWithArray(self, array=None):
+        if array is None or len(array) == 0:
+            return
+        
+        for i in array:
+            self.push(i)
 
     def pop(self): # Sai do começo
         if self.dado is None:
@@ -85,12 +93,11 @@ class Fila: # index 0 = começo , index n = final
         return counter
         
     def lengthDiverso(self):
-        filaAux = Fila(self.dado, self.prox)
+        filaAux = self
         counter = 0
 
-        while filaAux.dado is not None:
-            filaAux.dado = filaAux.prox.dado
-            filaAux.prox = filaAux.prox.prox
+        while filaAux is not None:
+            filaAux = filaAux.prox
             counter += 1
         
         return counter
@@ -105,11 +112,10 @@ class Fila: # index 0 = começo , index n = final
         return filaAux.pop()
     
     def lastDiverso(self):
-        filaAux = Fila(self.dado, self.prox)
+        filaAux = self
         
         while filaAux.prox is not None:
-            filaAux.dado = filaAux.prox.dado
-            filaAux.prox = filaAux.prox.prox
+            filaAux = filaAux.prox
         
         return filaAux.dado
 
@@ -133,16 +139,16 @@ class Fila: # index 0 = começo , index n = final
         if self.dado is None:
             return None
         
-        filaAux = Fila(self.dado, self.prox)
-        counter = 0
-
-        while filaAux.dado is not None:
-            value = filaAux.dado
-            filaAux.dado = filaAux.prox.dado
-            filaAux.prox = filaAux.prox.prox
-            if counter == index:
-                return value
-            counter += 1
+        filaAux = self
+        listAux = []
+        
+        while filaAux is not None:
+            listAux.append(filaAux.dado)
+            filaAux = filaAux.prox
+        
+        for i,e in enumerate(listAux):
+            if i == index:
+                return e
         
         return None
     
@@ -152,41 +158,30 @@ class Fila: # index 0 = começo , index n = final
             return None
 
         filaAux = Fila(self.dado, self.prox)
-        found = False
         counter = 0
 
-        while filaAux is not None:
-            aux = filaAux.pop()
-            if aux == value:
-                found = True
-                break
+        while filaAux.dado is not None:
+            if filaAux.pop() == value:
+                return counter
             counter += 1
-        
-        if found == True:
-            return counter
-        
+
         return None
     
     def getIndexByValueDiverso(self, value=None):
         if value == None:
             return None
 
-        filaAux = Fila(self.dado, self.prox)
-        found = False
-        counter = 0
+        filaAux = self
+        listAux = []
 
         while filaAux is not None:
-            aux = filaAux.dado
-            filaAux.dado = filaAux.prox.dado
-            filaAux.prox = filaAux.prox.prox
-            if aux == value:
-                found = True
-                break
-            counter += 1
-        
-        if found == True:
-            return counter
-        
+            listAux.append(filaAux.dado)
+            filaAux = filaAux.prox
+
+        for i, e in enumerate(listAux):
+            if e == value:
+                return i
+
         return None
     
     #Q10
@@ -626,12 +621,9 @@ def compareValueWithLessThanListOfValues(value, listOfValues: list):
     return False
 
 
-test = Fila()
-test.push(1)
-test.push(2)
-test.push(3)
-test.push(4)
-test.push(5)
-test.print()
-test.removeByIndexElementar(0)
-test.print()
+
+if __name__ == "__main__":
+    test = Fila()
+    test.pushWithArray([1, 2, 3, 4, 5])
+    test.print()
+    print(test.getIndexByValueDiverso(3))

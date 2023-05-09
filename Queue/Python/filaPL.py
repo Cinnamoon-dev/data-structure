@@ -92,15 +92,14 @@ class Fila: # index 0 = começo , index n = final
         
         return counter
         
-    def lengthDiverso(self):
-        filaAux = self
-        counter = 0
-
-        while filaAux is not None:
-            filaAux = filaAux.prox
-            counter += 1
+    def lengthDiverso(self, pilha=None, counter=0):
+        if pilha.dado is None:
+            return counter
         
-        return counter
+        counter += 1
+        pilha.pop()
+        
+        return self.lengthDiverso(pilha, counter)
     
     #Q7
     def lastElementar(self):

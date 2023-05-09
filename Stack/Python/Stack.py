@@ -114,7 +114,7 @@ class Pilha:
         counter += 1
         pilha.pop()
         
-        return self.lengthD(pilha, counter)
+        return self.lengthDiverso(pilha, counter)
 
     #Q7
     def lastElementar(self):

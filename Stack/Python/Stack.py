@@ -107,15 +107,14 @@ class Pilha:
         
         return counter
     
-    def lengthDiverso(self):
-        pilhaAux = self
-        counter = 0
-
-        while pilhaAux is not None:
-            pilhaAux = pilhaAux.prox
-            counter += 1
+    def lengthDiverso(self, pilha=None, counter=0):
+        if pilha.dado is None:
+            return counter
         
-        return counter
+        counter += 1
+        pilha.pop()
+        
+        return self.lengthD(pilha, counter)
 
     #Q7
     def lastElementar(self):

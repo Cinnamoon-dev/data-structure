@@ -431,10 +431,15 @@ class Pilha :
         aux = self
         counter = 0
 
+        if start > end:
+            return False
+
         while aux is not None:
 
-            if counter >= start and counter <= end:
+            if counter >= start and counter < end:
                 aux.pop()
+                counter += 1 
+                continue
 
             counter += 1
             aux = aux.prox
@@ -444,8 +449,14 @@ class Pilha :
     # Q18 Generic Remove all datas starting in start and close in end
     def removeAllBySliceGeneric( self, start : int, end : int ) -> bool:
 
-        for index in range(start, end):
-            self.removeByIndexElementar(index)
+        if start > end:
+            return False
+        
+        aux = start
+        
+        for i in range(start, end):
+            self.removeByIndexElementar(aux)
+            aux += 1 - i
 
         return True
     
@@ -474,23 +485,24 @@ class Pilha :
         return True
 
     # Q20 Elementar Change my stack values with a list of values and a list of indexs 
-    def setValuesInIndexesElementar( self ,indexs , elements ) -> bool:
+    def setValuesInIndexesElementar( self, indexs, elements ) -> bool:
         
-        aux = self
-        counter_one = 0
-        counter_two = 0
-
-        limite_loops = len(indexs)
+        counter_two = 0 # contador dos elements
+        limite_loops = len( indexs )
+        counter = 0 
 
         while counter_two < limite_loops:
+            aux = self
+
+            while aux is not None:
+
+                if counter == indexs[ counter_two ]:
+                    aux.dado = elements[ counter_two ]
+
+                counter += 1
+                aux = aux.prox
+
             counter_two += 1
-
-            while counter_one != indexs[counter_two - 1]:
-                aux = aux.prox 
-                counter_one += 1 
-
-            aux.dado = elements[counter_one]
-            counter_one = 0
 
         return True
     
@@ -542,6 +554,7 @@ if __name__ == '__main__':
     print('\nGet Values by Slice',"#"*10)
     print(pilha.getValuesBySliceElementar(1,2))
     print(pilha.getValuesBySliceGeneric(1,2))
+    
     print('\nRemove All',"#"*10)
     pilha.removeAllElementar()
     pilha.list()
@@ -550,6 +563,7 @@ if __name__ == '__main__':
     pilha.list()
     pilha.popular_com_array(["pedro",'henrique', 'barreto','freires'])
     pilha.list()
+    
     print('\nRemove by index ',"#"*10)
     pilha.list()
     pilha.removeByIndexElementar(2)
@@ -605,7 +619,34 @@ if __name__ == '__main__':
 
     pilha.removeAllGeneric()
     pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
-    pilha.removeAllBySliceGeneric(0,3) 
+    pilha.removeAllBySliceGeneric(0,4)
     pilha.list()
+
+    print('\nSet Value in Index Elementar',"#"*10)
+
+    pilha.removeAllGeneric()
+    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.setValueInIndexElementar(0,'catatau')
+    pilha.list()
+    print('-'*5)
+
+    pilha.removeAllGeneric()
+    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.setValueInIndexGeneric(0,'catatau')
+    pilha.list()
+
+    print('\n Set Values in Indexs',"#"*10)
+
+    pilha.removeAllGeneric()
+    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.setValuesInIndexesGenerico([0,2],['catatau','iceberg'])
+    pilha.list()
+    print('-'*5)
+
+    pilha.removeAllGeneric()
+    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.setValuesInIndexesElementar([0,2],['catatau','iceberg'])
+    pilha.list()
+
 
     

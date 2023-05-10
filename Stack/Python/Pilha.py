@@ -4,7 +4,6 @@ class Pilha :
         self.dado = dado
         self.prox = prox 
 
-
     def popular_com_array(self, array_for_insert = None):
 
         if array_for_insert is None:
@@ -12,7 +11,6 @@ class Pilha :
 
         for value in array_for_insert:
             self.pushWithClassLinkedList(value)
-
 
     def pushWithClassLinkedList( self, dado : int ) -> int:
 
@@ -39,15 +37,19 @@ class Pilha :
         return apagado
     
     def list( self ) -> None:
+
+        if self is None:
+            return None
+
         aux = self
 
-        while aux is not None :
+        while aux.prox is not None :
             print( aux.dado )
             aux = aux.prox
 
     # Q4 retorna o primeiro conforme a estrutura 
     def peakElementar( self ) -> int:
-        
+        # primeiro elemento de uma pilha é o topo 
         aux_data : int = self.pop()
         self.pushWithClassLinkedList(aux_data)
         
@@ -75,6 +77,7 @@ class Pilha :
     
     # Q6 Elementar Return length of my structure
     def tamanhoDaPilhaElementar( self ) -> int:
+        # usando uma pilha aux
         aux_pilha = Pilha(self.dado, self.prox)
         counter = 0
 
@@ -85,6 +88,7 @@ class Pilha :
     
     # Q6 Generic Return length of my structure
     def tamanhoDaPilhaGeneric( self ) -> int:
+        # usando um ponteiro aux 
         aux_pilha : Pilha = self
         counter : int = 0
         
@@ -96,9 +100,13 @@ class Pilha :
     
     # Q7 Elementar Return last element in my scruture
     def lastElementElementar( self ) -> int:
+
+        if self is None:
+            return None
+
         aux = self 
 
-        while aux.prox is not None:
+        while not aux.prox.dado is None:
             aux = aux.prox
     
         return aux.dado
@@ -132,8 +140,12 @@ class Pilha :
     
     # Q8 Generic Return a determined value in a spcific index
     def getValueByIndexGeneric( self, index : int ) -> int:
-        my_values = []
+
+        if self is None:
+            return None
+
         aux = self
+        my_values = []
 
         while aux.prox is not None :
             my_values.append( aux.dado )
@@ -143,33 +155,41 @@ class Pilha :
     
     # Q9 Elementar Return the first index that storage a specific value
     def getIndexByValueElementar( self, dado : int ) -> int:
-        aux_pilha = self
-        counter = 0
 
-        while aux_pilha.dado != dado and aux_pilha is not None:    
-            aux_pilha = aux_pilha.prox
+        if self is None:
+            return None
+
+        counter = 0
+        aux_pointer = self
+
+        while aux_pointer.dado != dado and aux_pointer.prox is not None:    
+            aux_pointer = aux_pointer.prox
             counter += 1
 
-        if aux_pilha is None:
+        if aux_pointer.prox is None and aux_pointer.dado != dado:
             return -1
 
         return counter
     
     # Q9 Generic Return the first index that storage a specific value
     def getIndexByValueGeneric( self, dado : int ) -> int:
-        counter = 0
-        aux = self
 
-        while aux.dado != dado and aux.pop() is not None:
+        if self is None:
+            return None
+
+        counter = 0
+        aux_pilha = Pilha( self.dado, self.prox )
+
+        while aux_pilha.dado != dado and aux_pilha.pop() is not None:
             counter += 1
 
-        if aux is None:
+        if aux_pilha.prox is None and aux_pilha.dado != dado:
             return -1
 
         return counter
     
     # Q10 Elementar Return a array of indexs that storage a specific value
-    def getAllIndexByValueElementar( self, dado : int ) -> list[int] :
+    def getAllIndexByValueElementar( self, dado : int ):
         
         result = []
         
@@ -197,8 +217,8 @@ class Pilha :
         if self is None:
             return result
         
-        my_newpilha = Pilha(self.dado, self.prox)
         counter = 0
+        my_newpilha = Pilha(self.dado, self.prox)
 
         my_dado = my_newpilha.pop()
 
@@ -213,7 +233,7 @@ class Pilha :
         return result
 
     # Q11 Elementar return a array of values in an array of index
-    def getValuesByIndexsElementar( self, indexs : list[int] ) -> list[int]:
+    def getValuesByIndexsElementar( self, indexs ) :
         
         result = []
 
@@ -221,7 +241,7 @@ class Pilha :
             return result
 
         for index in indexs:
-            # complexity is n² 
+    
             aux = self
             counter = 0
 
@@ -234,7 +254,7 @@ class Pilha :
         return result
     
     # Q11 Generic return a array of values in an array of index
-    def getValuesByIndexsGenerico( self, indexs : list[int] ) -> list[int]:
+    def getValuesByIndexsGenerico( self, indexs ) :
 
         result = []
 
@@ -250,7 +270,7 @@ class Pilha :
         return result
     
     # Q12 Elementar return a array sliced of my array
-    def getValuesBySliceElementar(self, start : int , end : int ) -> list[int]:
+    def getValuesBySliceElementar(self, start : int , end : int ) :
         
         result = []
 
@@ -271,7 +291,7 @@ class Pilha :
         return result
     
     # Q12 Generic return a array sliced of my array
-    def getValuesBySliceGeneric(self, start : int, end : int ) -> list[int]:
+    def getValuesBySliceGeneric(self, start : int, end : int ) :
         result = []
 
         if self is None:
@@ -318,11 +338,11 @@ class Pilha :
         if aux is None:
             return -1
 
-        last_data_storaged = aux.dado
+        deleted = aux.dado
         aux.dado = aux.prox.dado
         aux.prox = aux.prox.prox
 
-        return last_data_storaged
+        return deleted
     
     # Q14 Generic Remove a specific value in a determinate index
     def removeByIndexGenerico(self ,index : int) -> int:
@@ -422,7 +442,7 @@ class Pilha :
         return True
     
     # Q17 Elementar Remove all datas with a specific index
-    def removeAllByIndexesElementar( self, indexs : list[int]) -> bool:
+    def removeAllByIndexesElementar( self, indexs ) -> bool:
         
         if self is None:
             return None
@@ -443,7 +463,7 @@ class Pilha :
         return True
     
     # Q17 Generico Remove all datas with a specific index
-    def removeAllByIndexesGeneric(self, indexs : list[int] ) -> bool:
+    def removeAllByIndexesGeneric(self, indexs ) -> bool:
 
         if self is None:
             return None
@@ -454,7 +474,7 @@ class Pilha :
         return True
     
     # Q18 Elementar Remove all datas starting in start and close in end
-    def removeAllBySlice( self, start : int, end : int ) -> bool:
+    def removeAllBySliceElementar( self, start : int, end : int ) -> bool:
         
         if self is None:
             return None
@@ -462,7 +482,7 @@ class Pilha :
         counter = 0
         aux = self
 
-        while counter != end :
+        while counter != end : # colocar o counter menor que o start 
 
             if counter >= start:
                 aux.pop()
@@ -473,13 +493,13 @@ class Pilha :
         return True
 
     # Q18 Generic Remove all datas starting in start and close in end
-    def removeAllBySlice( self, start : int, end : int ) -> bool:
+    def removeAllBySliceGeneric( self, start : int, end : int ) -> bool:
 
         if self is None:
             return None
 
         for index in range(start, end):
-            self.removeByIndexElementar(self.getValueByIndexElementar(index))
+            self.removeByIndexElementar(index)
 
         return True
     
@@ -515,7 +535,7 @@ class Pilha :
         return True
 
     # Q20 Elementar Change my stack values with a list of values and a list of indexs 
-    def setValuesInIndexesElementar( self ,indexs : list[int], elements: list[int]) -> bool:
+    def setValuesInIndexesElementar( self ,indexs , elements ) -> bool:
         
         if self is None:
             return None
@@ -539,7 +559,7 @@ class Pilha :
         return True
     
     # Q20 Generico Change my stack values with a list of values and a list of indexs 
-    def setValuesInIndexesGenerico( self ,indexs : list[int] , elements : list[int]):
+    def setValuesInIndexesGenerico( self ,indexs , elements ):
         
         if self is None:
             return None
@@ -551,3 +571,108 @@ class Pilha :
             counter_one += 1
 
         return True
+
+
+if __name__ == '__main__':
+
+    # populando com array 
+    pilha = Pilha()
+    pilha.popular_com_array(["pedro",'pedro','henrique', 'barreto','freires'])
+    pilha.list()
+    print('\npop',"#"*10)
+    pilha.pop()
+    pilha.list()
+    print('\npeak',"#"*10)
+    print(pilha.peakElementar())
+    print(pilha.peakGenerico())
+    print('\nisEmpty',"#"*10)
+    print(pilha.isEmptyGeneric())
+    print(pilha.isEmptyElementar())
+    print('\nTam. Pilha',"#"*10)
+    print(pilha.tamanhoDaPilhaElementar())
+    print(pilha.tamanhoDaPilhaGeneric())
+    print('\nLast Element',"#"*10)
+    print(pilha.lastElementElementar())
+    print(pilha.lastElementGeneric())
+    print('\nGet Value by Index',"#"*10)
+    print(pilha.getValueByIndexElementar(1))
+    print(pilha.getValueByIndexGeneric(1))
+    print('\nGet Index By Value',"#"*10)
+    print(pilha.getIndexByValueElementar('pedro'))
+    print(pilha.getIndexByValueGeneric('pedro'))
+    print('\nGet All Index by Value',"#"*10)
+    print(pilha.getAllIndexByValueGenerico(1))
+    print(pilha.getAllIndexByValueElementar(1))
+    print('\nGet All Values by Indexs',"#"*10)
+    print(pilha.getValuesByIndexsElementar( [2,1]))
+    print(pilha.getValuesByIndexsGenerico([1,2]))
+    print('\nGet Values by Slice',"#"*10)
+    print(pilha.getValuesBySliceElementar(1,2))
+    print(pilha.getValuesBySliceGeneric(1,2))
+    print('\nRemove All',"#"*10)
+    pilha.removeAllElementar()
+    pilha.list()
+    pilha.popular_com_array(["pedro",'pedro', 'barreto','freires', 'souza','andrade','bernado','campos'])
+    pilha.removeAllGeneric()
+    pilha.list()
+    pilha.popular_com_array(["pedro",'henrique', 'barreto','freires'])
+    pilha.list()
+    print('\nRemove by index ',"#"*10)
+    pilha.list()
+    pilha.removeByIndexElementar(2)
+    print('-'*5)
+    pilha.removeByIndexGenerico(2) # é um elemento diferente
+    pilha.list()
+    print('\nRemove by Value ',"#"*10)
+    
+    pilha.removeAllGeneric()
+    pilha.popular_com_array(["pedro",'pedro', 'barreto','freires', 'souza','andrade','bernado','campos'])
+    pilha.removeFirstElementByValueGenerico('pedro')
+    pilha.list()
+    print('-'*5)
+
+    pilha.removeAllGeneric()
+    pilha.popular_com_array(["pedro",'pedro', 'barreto','freires', 'souza','andrade','bernado','campos'])
+    pilha.removeFirstElementByValueElementar('pedro')
+    pilha.list()
+
+    print('\nRemove All by Value ',"#"*10)
+    
+    pilha.removeAllGeneric()
+    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.removeAllByValueElementar('pedro')
+    pilha.list()
+    print('-'*5)
+    
+    pilha.removeAllGeneric()
+    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.removeAllByValueGeneric('pedro')
+    pilha.list()
+    
+    print('\nRemove All by indexs  ',"#"*10)
+
+    pilha.removeAllGeneric()
+    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.removeAllByIndexesElementar([1,2])
+    pilha.list()
+    print('-'*5)
+    
+    pilha.removeAllGeneric()
+    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.removeAllByIndexesElementar([1,2])
+    pilha.list()
+
+    print('\nRemove All by slice  ',"#"*10)
+
+    pilha.removeAllGeneric()
+    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.removeAllBySliceElementar(0,3) # bug here ? 
+    pilha.list()
+    print('-'*5)
+
+    pilha.removeAllGeneric()
+    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.removeAllBySliceGeneric(0,3) 
+    pilha.list()
+
+    

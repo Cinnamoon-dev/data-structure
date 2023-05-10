@@ -110,13 +110,14 @@ class Fila: # index 0 = começo , index n = final
         
         return filaAux.pop()
     
-    def lastDiverso(self):
-        filaAux = self
+    def lastDiverso(self, fila=None):
+        if fila.prox is None:
+            return fila.dado
         
-        while filaAux.prox is not None:
-            filaAux = filaAux.prox
-        
-        return filaAux.dado
+        aux = fila
+        dado = self.lastDiverso(aux.prox)
+
+        return dado
 
     #Q8
     def getValueByIndexElementar(self, index):
@@ -574,5 +575,5 @@ if __name__ == "__main__":
     test = Fila()
     test.pushWithArray([1, 2, 3, 4, 5])
     test.print()
-    print(test.removeByValueDiverso(6))
+    print(test.lastDiverso(test))
     test.print()

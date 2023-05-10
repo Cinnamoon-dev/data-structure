@@ -122,14 +122,15 @@ class Pilha:
 
         return pilhaAux.pop()
     
-    def lastDiverso(self):
-        pilhaAux = self
+    def lastDiverso(self, pilha=None):
+        if pilha.prox is None:
+            return pilha.dado
+        
+        aux = pilha
+        dado = self.lastDiverso(aux.prox)
 
-        while pilhaAux.prox is not None:
-            pilhaAux = pilhaAux.prox
-
-        return pilhaAux.dado
-    
+        return dado
+        
     #Q8
     def getValueByIndexElementar(self, index):
         if self.dado is None:
@@ -639,5 +640,5 @@ if __name__ == "__main__":
     test = Pilha()
     test.initByArray([1, 2, 3, 4, 5])
     test.print()
-    print(test.lengthDiverso(test))
+    print(test.lastDiverso(test))
     test.print()

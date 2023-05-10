@@ -217,39 +217,37 @@ class Pilha:
         return None
 
     #Q10
-    # Cria uma pilha aux, e vai passando por cada elemento dela, caso o valor seja igual o indice é 
-    # adicionado a uma lista e ela é retornada
     def getAllIndexByValueElementar(self, value):
         if value == None:
             return []
 
-        pilhaAux = Pilha(self.dado, self.prox)
+        pilhaAux = Pilha()
         indexes = []
         counter = 0
 
+        while self.dado is not None:
+            pilhaAux.insert(self.pop())
+
         while pilhaAux.dado is not None:
-            aux = pilhaAux.pop()
-            if aux == value:
+            self.insert(pilhaAux.pop())
+            if self.peakElementar() == value:
                 indexes.append(counter)
             counter += 1
-        
+
         return indexes
     
     def getAllIndexByValueDiverso(self, value):
         if value == None:
             return []
 
-        pilhaAux = Pilha(self.dado, self.prox)
+        pilhaAux = self
         indexes = []
-        counter = 0
 
-        while pilhaAux.dado is not None:
-            aux = pilhaAux.dado
-            pilhaAux.dado = pilhaAux.prox.dado
-            pilhaAux.prox = pilhaAux.prox.prox
-            if aux == value:
-                indexes.append(counter)
-            counter += 1
+        for i in range(self.lengthDiverso() - 1, -1, -1):
+            if pilhaAux.dado == value:
+                indexes.append(i)
+            
+            pilhaAux = pilhaAux.prox
         
         return indexes
     
@@ -258,14 +256,17 @@ class Pilha:
         if indexes is None:
             return []
 
-        pilhaAux = Pilha(self.dado, self.prox)
+        pilhaAux = Pilha()
         values = []
         counter = 0
 
+        while self.dado is not None:
+            pilhaAux.insert(self.pop())
+
         while pilhaAux.dado is not None:
-            dado = pilhaAux.pop()
-            if compareEqualsValueWithListOfValues(counter, indexes):
-                values.append(dado)
+            self.insert(pilhaAux.pop())
+            if counter in indexes:
+                values.append(self.peakElementar())
             counter += 1
         
         return values
@@ -274,77 +275,63 @@ class Pilha:
         if indexes is None:
             return []
 
-        pilhaAux = Pilha(self.dado, self.prox)
+        pilhaAux = self
         values = []
-        counter = 0
 
-        while pilhaAux.dado is not None:
-            dado = pilhaAux.dado
-            pilhaAux.dado = pilhaAux.prox.dado
-            pilhaAux.prox = pilhaAux.prox.prox
-            if compareEqualsValueWithListOfValues(counter, indexes):
-                values.append(dado)
-            counter += 1
-        
+        for i in range(self.lengthDiverso() - 1, -1, -1):
+            if i in indexes:
+                values.append(pilhaAux.dado)
+            pilhaAux = pilhaAux.prox
+
         return values
 
     #Q12
-    # Considerando o começo como o primeiro elemento que foi colocado na pilha
-    def getValuesBySliceElementar(self, begin: int, end: int) -> list: 
-        stackSize = self.lengthElementar()
-        if stackSize < (end + 1) or stackSize < (begin + 1):
+    def getValuesBySliceElementar(self, begin: int, end: int) -> list:
+        if not (0 <= begin < self.lengthElementar() and 0 <= end < self.lengthElementar()):
             print("Slice out of range")
             return None
 
-        pilhaAux2 = Pilha(self.dado, self.prox)
         pilhaAux = Pilha()
 
-        while pilhaAux2.dado is not None:
-            value = pilhaAux2.pop()
-            pilhaAux.insert(value)
+        while self.dado is not None:
+            pilhaAux.insert(self.pop())
         
         counter = 0
         slice = []
         
         while counter != begin:
-            pilhaAux.pop()
+            self.insert(pilhaAux.pop())
             counter += 1
         
         while counter != (end + 1):
             value = pilhaAux.pop()
             slice.append(value)
+
+            self.insert(value)
             counter += 1
         
+        while pilhaAux.dado is not None:
+            self.insert(pilhaAux.pop())
+
         return slice
 
     def getValuesBySliceDiverso(self, begin: int, end: int) -> list:
-        stackSize = self.lengthElementar()
-        if stackSize < (end + 1) or stackSize < (begin + 1):
+        if not (0 <= begin < self.lengthDiverso() and 0 <= end < self.lengthDiverso()):
             print("Slice out of range")
             return None
 
-        pilhaAux2 = Pilha(self.dado, self.prox)
         pilhaAux = Pilha()
 
-        while pilhaAux2.dado is not None:
-            value = pilhaAux2.pop()
-            pilhaAux.insert(value)
+        while self.dado is not None:
+            pilhaAux.insert(self.pop())
 
-        counter = 0
         slice = []
-        
-        while counter != begin:
-            pilhaAux.dado = pilhaAux.prox.dado
-            pilhaAux.prox - pilhaAux.prox.prox
-            counter += 1
-        
-        while counter != (end + 1):
-            value = pilhaAux.dado
-            pilhaAux.dado = pilhaAux.prox.dado
-            pilhaAux.prox = pilhaAux.prox.prox
-            slice.append(value)
-            counter += 1
-        
+
+        for i in range(0, pilhaAux.lengthDiverso()):
+            if begin <= i <= end:
+                slice.append(pilhaAux.dado)
+            self.insert(pilhaAux.pop())
+             
         return slice
     
     #Q13
@@ -357,58 +344,42 @@ class Pilha:
         self.prox = None
 
     #Q14
-    # Eu conto quantos indices tem e vou diminuindo do topo ate o fim
     def removeByIndexElementar(self, index):
-        pilhaAux = Pilha(self.dado, self.prox)
-        counter = -1 # Para contar de 0 até n - 1, como indices
+        pilhaAux = Pilha()
+        counter = 0
+
+        while self.dado is not None:
+            pilhaAux.insert(self.pop())
 
         while pilhaAux.dado is not None:
-            pilhaAux.pop()
+            if counter == index:
+                pilhaAux.pop()
+                counter += 1
+                continue
+
+            self.insert(pilhaAux.pop())
             counter += 1
-        
-        pilhaAux = Pilha(self.dado, self.prox)
-        pilhaAux2 = Pilha()
-
-        while counter != index:
-            value = self.pop()
-            pilhaAux2.insert(value) 
-            counter -= 1
-        
-        self.pop()
-
-        while pilhaAux2.dado is not None:
-            value = pilhaAux2.pop()
-            self.insert(value)
 
     def removeByIndexDiverso(self, index):
-        pilhaAux = Pilha(self.dado, self.prox)
-        counter = -1 # Para contar de 0 até n - 1, como indices
-
-        while pilhaAux is not None:
-            pilhaAux.dado = pilhaAux.prox.dado
-            pilhaAux.prox = pilhaAux.prox.prox
-            counter += 1
+        counter = self.lengthDiverso() - 1
+        pilhaAux = Pilha()
         
-        pilhaAux = Pilha(self.dado, self.prox)
-        pilhaAux2 = Pilha()
+        while self.dado is not None:
+            pilhaAux.insert(self.pop())
 
-        while counter != index:
-            value = self.dado
-            self.dado = self.prox.dado
-            self.prox = self.prox.prox
-            pilhaAux2.insert(value) 
-            counter -= 1
+        for i in range(counter, -1, -1):
+            if i == index:
+                self.pop()
+                break
+
+            pilhaAux.insert(self.pop())
         
-        self.pop()
+        while pilhaAux.dado is not None:
+            self.insert(pilhaAux.pop())
 
-        while pilhaAux2.dado is not None:
-            value = pilhaAux2.dado
-            pilhaAux2.dado = pilhaAux2.prox.dado
-            pilhaAux2.prox = pilhaAux2.prox.prox
-            self.insert(value)
     #Q15
     def removeByValueElementar(self, value=None):
-        if value is None:
+        if value is None or self.dado is None:
             return
         
         pilhaAux = Pilha()
@@ -422,22 +393,15 @@ class Pilha:
             self.insert(pilhaAux.pop())
     
     def removeByValueDiverso(self, value=None):
-        if value is None:
-            return
+        if value is None or self.dado is None:
+            return None
         
-        pilhaAux = Pilha()
+        aux = self
 
-        while self.dado != value and self.dado is not None:
-            pilhaAux.insert(self.dado)
-            self.dado = self.prox.dado
-            self.prox = self.prox.prox
-        
-        self.pop()
-
-        while pilhaAux.dado is not None:
-            self.insert(pilhaAux.dado)
-            pilhaAux.dado = pilhaAux.prox.dado
-            pilhaAux.prox = pilhaAux.prox.prox
+        while aux is not None:
+            if aux.dado == value:
+                aux.pop()
+            aux = aux.prox
 
     #Q16
     def removeAllByValueElementar(self, value=None):
@@ -678,5 +642,5 @@ if __name__ == "__main__":
     test = Pilha()
     test.initByArray([1, 2, 3, 4, 5])
     test.print()
-    print(test.lengthDiverso(test))
+    print(test.removeByValueDiverso(5))
     test.print()

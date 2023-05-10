@@ -193,8 +193,7 @@ class Fila: # index 0 = começo , index n = final
         counter = 0
 
         while filaAux.dado is not None:
-            aux = filaAux.pop()
-            if aux == value:
+            if filaAux.pop() == value:
                 indexes.append(counter)
             counter += 1
         
@@ -206,15 +205,11 @@ class Fila: # index 0 = começo , index n = final
 
         filaAux = Fila(self.dado, self.prox)
         indexes = []
-        counter = 0
 
-        while filaAux.dado is not None:
-            aux = filaAux.dado
-            filaAux.dado = filaAux.prox.dado
-            filaAux.prox = filaAux.prox.prox
-            if aux == value:
-                indexes.append(counter)
-            counter += 1
+        for i in range(0, filaAux.lengthDiverso()):
+            if filaAux.dado == value:
+                indexes.append(i)
+            filaAux = filaAux.prox
         
         return indexes
 
@@ -229,7 +224,7 @@ class Fila: # index 0 = começo , index n = final
 
         while filaAux.dado is not None:
             dado = filaAux.pop()
-            if compareEqualsValueWithListOfValues(counter, indexes):
+            if counter in indexes:
                 values.append(dado)
             counter += 1
         
@@ -239,24 +234,19 @@ class Fila: # index 0 = começo , index n = final
         if indexes is None:
             return []
 
-        filaAux = Fila(self.dado, self.prox)
+        filaAux = self
         values = []
-        counter = 0
 
-        while filaAux.dado is not None:
-            dado = filaAux.dado
-            filaAux.dado = filaAux.prox.dado
-            filaAux.prox = filaAux.prox.prox
-            if compareEqualsValueWithListOfValues(counter, indexes):
-                values.append(dado)
-            counter += 1
+        for i in range(0, filaAux.lengthDiverso()):
+            if i in indexes:
+                values.append(filaAux.dado)
+            filaAux = filaAux.prox
         
         return values
     
     #Q12
     def getValuesBySliceElementar(self, begin: int, end: int) -> list: 
-        queueSize = self.lengthElementar()
-        if queueSize < (end + 1) or queueSize < (begin + 1):
+        if not (0 <= begin < self.lengthElementar() and 0 <= end < self.lengthElementar()):
             print("Slice out of range")
             return None
 
@@ -269,33 +259,23 @@ class Fila: # index 0 = começo , index n = final
             counter += 1
         
         while counter != (end + 1):
-            value = filaAux.pop()
-            slice.append(value)
+            slice.append(filaAux.pop())
             counter += 1
         
         return slice
 
     def getValuesBySliceDiverso(self, begin: int, end: int) -> list:
-        queueSize = self.lengthElementar
-        if queueSize < (end + 1) or queueSize < (begin + 1):
+        if not (0 <= begin < self.lengthDiverso() and 0 <= end < self.lengthDiverso()):
             print("Slice out of range")
             return None
 
-        filaAux = Fila(self.dado, self.prox)
-        counter = 0
+        filaAux = self
         slice = []
         
-        while counter != begin:
-            filaAux.dado = filaAux.prox.dado
-            filaAux.prox - filaAux.prox.prox
-            counter += 1
-        
-        while counter != (end + 1):
-            value = filaAux.dado
-            filaAux.dado = filaAux.prox.dado
-            filaAux.prox = filaAux.prox.prox
-            slice.append(value)
-            counter += 1
+        for i in range(0, filaAux.lengthDiverso()):
+            if begin <= i <= end:
+                slice.append(filaAux.dado)
+            filaAux = filaAux.prox
         
         return slice
     
@@ -310,57 +290,33 @@ class Fila: # index 0 = começo , index n = final
     
     #Q14
     def removeByIndexElementar(self, index):
-        filaAux = Fila(self.dado, self.prox)
-        counter = -1 # Para contar de 0 até n - 1, como indices
+        filaAux = Fila()
+        counter = 0
 
-        while filaAux.dado is not None:
-            filaAux.pop()
+        while self.dado is not None:
+            if counter == index:
+                self.pop()
+                counter += 1
+                continue
+            
+            self.insert(filaAux.pop())
             counter += 1
         
-        filaAux = Fila(self.dado, self.prox)
-        filaAux2 = Fila()
-
-        while counter != index:
-            value = self.pop()
-            filaAux2.push(value) 
-            counter -= 1
-        
-        self.pop()
-
-        while filaAux2.dado is not None:
-            value = filaAux2.pop()
-            self.push(value)
+        while filaAux.dado is not None:
+            self.insert(filaAux.pop())
 
     def removeByIndexDiverso(self, index):
-        filaAux = Fila(self.dado, self.prox)
-        counter = -1 # Para contar de 0 até n - 1, como indices
-
-        while filaAux is not None:
-            filaAux.dado = filaAux.prox.dado
-            filaAux.prox = filaAux.prox.prox
-            counter += 1
+        arrayAux = []
         
-        filaAux = Fila(self.dado, self.prox)
-        filaAux2 = Fila()
-
-        while counter != index:
-            value = self.dado
-            self.dado = self.prox.dado
-            self.prox = self.prox.prox
-            filaAux2.push(value) 
-            counter -= 1
+        while self.dado is not None:
+            arrayAux.append(self.pop())
         
-        self.pop()
-
-        while filaAux2.dado is not None:
-            value = filaAux2.dado
-            filaAux2.dado = filaAux2.prox.dado
-            filaAux2.prox = filaAux2.prox.prox
-            self.push(value)
+        arrayAux.pop(index)
+        self.pushWithArray(arrayAux)
 
     #Q15
     def removeByValueElementar(self, value=None):
-        if value is None:
+        if value is None or self.dado is None:
             return
         
         filaAux = Fila()
@@ -374,26 +330,19 @@ class Fila: # index 0 = começo , index n = final
             self.push(filaAux.pop())
     
     def removeByValueDiverso(self, value=None):
-        if value is None:
-            return
+        if value is None or self.dado is None:
+            return None
         
-        filaAux = Fila()
+        aux = self
 
-        while self.dado != value and self.dado is not None:
-            filaAux.push(self.dado)
-            self.dado = self.prox.dado
-            self.prox = self.prox.prox
-        
-        self.pop()
-
-        while filaAux.dado is not None:
-            self.push(filaAux.dado)
-            filaAux.dado = filaAux.prox.dado
-            filaAux.prox = filaAux.prox.prox
+        while aux is not None:
+            if aux.dado == value:
+                aux.pop()
+            aux = aux.prox
     
     #Q16
     def removeAllByValueElementar(self, value=None):
-        if value is None:
+        if value is None or self.dado is None:
             return
 
         filaAux = Fila()
@@ -625,4 +574,5 @@ if __name__ == "__main__":
     test = Fila()
     test.pushWithArray([1, 2, 3, 4, 5])
     test.print()
-    print(test.getIndexByValueDiverso(3))
+    print(test.removeByValueDiverso(6))
+    test.print()

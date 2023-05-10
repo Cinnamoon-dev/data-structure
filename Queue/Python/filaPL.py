@@ -94,7 +94,7 @@ class Fila: # index 0 = começo , index n = final
         
     def lengthDiverso(self, pilha=None, counter=0):
         if pilha is None or pilha.dado is None:
-            return 0
+            return counter
         
         counter += 1
         aux = pilha

@@ -1,5 +1,3 @@
-import copy
-
 class Pilha:
     def __init__(self, dado=None, prox=None):
         self.dado = dado
@@ -56,7 +54,6 @@ class Pilha:
 
         return array
 
-
     def pushWithClassLinkedList(self, dado=None):
         if dado is None:
             return
@@ -109,7 +106,7 @@ class Pilha:
     
     def lengthDiverso(self, pilha=None, counter=0):
         if pilha is None or pilha.dado is None:
-            return 0
+            return counter
         
         counter += 1
         aux = pilha
@@ -642,5 +639,5 @@ if __name__ == "__main__":
     test = Pilha()
     test.initByArray([1, 2, 3, 4, 5])
     test.print()
-    print(test.removeByValueDiverso(5))
+    print(test.lengthDiverso(test))
     test.print()

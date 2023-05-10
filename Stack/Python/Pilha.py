@@ -22,9 +22,6 @@ class Pilha :
 
     def pop( self ) -> int:
 
-        if self is None:
-            return None
-
         apagado = self.dado
 
         if not self.prox:
@@ -37,9 +34,6 @@ class Pilha :
         return apagado
     
     def list( self ) -> None:
-
-        if self is None:
-            return None
 
         aux = self
 
@@ -101,9 +95,6 @@ class Pilha :
     # Q7 Elementar Return last element in my scruture
     def lastElementElementar( self ) -> int:
 
-        if self is None:
-            return None
-
         aux = self 
 
         while not aux.prox.dado is None:
@@ -113,9 +104,6 @@ class Pilha :
 
     # Q7 Generico Return last element in my scruture
     def lastElementGeneric( self ) -> int:
-
-        if self is None:
-            return None
 
         aux_pilha = Pilha(self.dado, self.prox)
 
@@ -141,9 +129,6 @@ class Pilha :
     # Q8 Generic Return a determined value in a spcific index
     def getValueByIndexGeneric( self, index : int ) -> int:
 
-        if self is None:
-            return None
-
         aux = self
         my_values = []
 
@@ -155,9 +140,6 @@ class Pilha :
     
     # Q9 Elementar Return the first index that storage a specific value
     def getIndexByValueElementar( self, dado : int ) -> int:
-
-        if self is None:
-            return None
 
         counter = 0
         aux_pointer = self
@@ -173,9 +155,6 @@ class Pilha :
     
     # Q9 Generic Return the first index that storage a specific value
     def getIndexByValueGeneric( self, dado : int ) -> int:
-
-        if self is None:
-            return None
 
         counter = 0
         aux_pilha = Pilha( self.dado, self.prox )
@@ -305,9 +284,6 @@ class Pilha :
     # Q13 Elementar Remove All values of my stack 
     def removeAllElementar(self) -> None:
         
-        if self is None:
-            return None
-        
         aux = self
 
         while aux.pop() is not None:
@@ -324,9 +300,6 @@ class Pilha :
     
     # Q14 Elementar Remove a specific value in a determinate index
     def removeByIndexElementar(self ,index : int) -> int:
-
-        if self is None:
-            return None
 
         aux = self
         counter = 0
@@ -346,9 +319,6 @@ class Pilha :
     
     # Q14 Generic Remove a specific value in a determinate index
     def removeByIndexGenerico(self ,index : int) -> int:
-        
-        if self is None:
-            return None
 
         aux = self
         dado_for_remove = self.getValueByIndexGeneric(index)
@@ -364,9 +334,6 @@ class Pilha :
     # Q15 Generic Remove the first data that has equal dado value 
     def removeFirstElementByValueElementar(self, dado : int) -> int:
         
-        if self is None:
-            return None
-        
         aux = self
 
         while aux.dado != dado:
@@ -381,9 +348,6 @@ class Pilha :
     
     # Q15 Generic Remove the first data that has equal dado value        
     def removeFirstElementByValueGenerico( self, dado : int) -> int:
-
-        if self is None:
-            return None
 
         aux = self
         counter = 0 
@@ -405,9 +369,6 @@ class Pilha :
     # Q16 Elementar Remove all datas with a specific value
     def removeAllByValueElementar(self, value : int) -> int:
         
-        if self is None:
-            return None
-        
         aux = self 
 
         while aux.dado is not None:
@@ -422,9 +383,6 @@ class Pilha :
     
     # Q16 Generic Remove all datas with a specific value
     def removeAllByValueGeneric( self, value : int ) -> bool:
-
-        if self is None:
-            return None
 
         qtd_itens = self.tamanhoDaPilhaElementar()
         counter = 0
@@ -443,9 +401,6 @@ class Pilha :
     
     # Q17 Elementar Remove all datas with a specific index
     def removeAllByIndexesElementar( self, indexs ) -> bool:
-        
-        if self is None:
-            return None
 
         aux = self 
         counter  = 0
@@ -465,9 +420,6 @@ class Pilha :
     # Q17 Generico Remove all datas with a specific index
     def removeAllByIndexesGeneric(self, indexs ) -> bool:
 
-        if self is None:
-            return None
-
         for index in indexs:
             self.removeByIndexElementar(index)
 
@@ -475,16 +427,13 @@ class Pilha :
     
     # Q18 Elementar Remove all datas starting in start and close in end
     def removeAllBySliceElementar( self, start : int, end : int ) -> bool:
-        
-        if self is None:
-            return None
 
-        counter = 0
         aux = self
+        counter = 0
 
-        while counter != end : # colocar o counter menor que o start 
+        while aux is not None:
 
-            if counter >= start:
+            if counter >= start and counter <= end:
                 aux.pop()
 
             counter += 1
@@ -495,9 +444,6 @@ class Pilha :
     # Q18 Generic Remove all datas starting in start and close in end
     def removeAllBySliceGeneric( self, start : int, end : int ) -> bool:
 
-        if self is None:
-            return None
-
         for index in range(start, end):
             self.removeByIndexElementar(index)
 
@@ -505,9 +451,6 @@ class Pilha :
     
     # Q19 Elementar Assignment a value for a specific index
     def setValueInIndexElementar(self, index:int, value:str) -> bool:
-
-        if self is None:
-            return None
 
         aux = self
         counter = 0
@@ -522,10 +465,6 @@ class Pilha :
 
     # Q19 Generic Assignment a value for a specific index
     def setValueInIndexGeneric(self, index : int , value : int) -> bool:
-        
-        if self is None:
-            return None
-        
         aux = self
     
         for index in range(index):
@@ -536,9 +475,6 @@ class Pilha :
 
     # Q20 Elementar Change my stack values with a list of values and a list of indexs 
     def setValuesInIndexesElementar( self ,indexs , elements ) -> bool:
-        
-        if self is None:
-            return None
         
         aux = self
         counter_one = 0
@@ -560,9 +496,6 @@ class Pilha :
     
     # Q20 Generico Change my stack values with a list of values and a list of indexs 
     def setValuesInIndexesGenerico( self ,indexs , elements ):
-        
-        if self is None:
-            return None
 
         counter_one = 0
 
@@ -621,7 +554,7 @@ if __name__ == '__main__':
     pilha.list()
     pilha.removeByIndexElementar(2)
     print('-'*5)
-    pilha.removeByIndexGenerico(2) # é um elemento diferente
+    pilha.removeByIndexGenerico(2)
     pilha.list()
     print('\nRemove by Value ',"#"*10)
     
@@ -666,7 +599,7 @@ if __name__ == '__main__':
 
     pilha.removeAllGeneric()
     pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
-    pilha.removeAllBySliceElementar(0,3) # bug here ? 
+    pilha.removeAllBySliceElementar(0,4) # bug here ? 
     pilha.list()
     print('-'*5)
 

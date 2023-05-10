@@ -108,13 +108,13 @@ class Pilha:
         return counter
     
     def lengthDiverso(self, pilha=None, counter=0):
-        if pilha.dado is None:
-            return counter
+        if pilha is None or pilha.dado is None:
+            return 0
         
         counter += 1
-        pilha.pop()
+        aux = pilha
         
-        return self.lengthDiverso(pilha, counter)
+        return self.lengthDiverso(aux.prox, counter)
 
     #Q7
     def lastElementar(self):
@@ -678,4 +678,5 @@ if __name__ == "__main__":
     test = Pilha()
     test.initByArray([1, 2, 3, 4, 5])
     test.print()
-    print(test.getIndexByValueElementar(3))
+    print(test.lengthDiverso(test))
+    test.print()

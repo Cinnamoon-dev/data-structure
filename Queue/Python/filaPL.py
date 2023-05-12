@@ -335,10 +335,13 @@ class Fila: # index 0 = começo , index n = final
             return None
         
         aux = self
+        counter = self.lengthDiverso - 1
 
-        while aux is not None:
+        for i in range(counter, -1, -1):
             if aux.dado == value:
                 aux.pop()
+                return
+
             aux = aux.prox
     
     #Q16
@@ -360,20 +363,15 @@ class Fila: # index 0 = começo , index n = final
         if value is None:
             return
 
-        filaAux = Fila()
-        while self.dado is not None:
-            if self.dado != value:
-                filaAux.push(self.dado)
-                self.dado = self.prox.dado
-                self.prox = self.prox.prox
-                continue
-            self.dado = self.prox.dado
-            self.prox = self.prox.prox
+        aux = self
+        counter = self.lengthElementar() - 1
 
-        while filaAux.dado is not None:
-            self.push(filaAux.dado)
-            filaAux.dado = filaAux.prox.dado
-            filaAux.prox = filaAux.prox.prox
+        for i in range(counter, -1, -1):
+            if aux.dado == value:
+                aux.pop()
+                continue
+
+            aux = aux.prox
 
     #Q17
     def removeAllByIndexesElementar(self, indexes: list):
@@ -388,7 +386,7 @@ class Fila: # index 0 = começo , index n = final
             filaAux.push(self.pop())
         
         while counter < length:
-            if compareEqualsValueWithListOfValues(counter, indexes):
+            if counter in indexes:
                 filaAux.pop()
                 counter += 1
                 continue
@@ -409,8 +407,7 @@ class Fila: # index 0 = começo , index n = final
 
     #Q18
     def removeAllBySliceElementar(self, start: int, end: int):
-        queueSize = self.lengthElementar()
-        if queueSize < (end + 1) or queueSize < (start + 1):
+        if not (0 <= start < self.lengthElementar() and 0 <= end < self.lengthElementar()):
             print("Slice out of range")
             return None
 
@@ -420,7 +417,7 @@ class Fila: # index 0 = começo , index n = final
         while self.dado is not None:
             self.pop()
         
-        while counter != start: # [1, 2, 3, 4, 5] e (1, 3)
+        while counter != start:
             self.push(filaAux.pop())
             counter += 1
         
@@ -432,32 +429,25 @@ class Fila: # index 0 = começo , index n = final
             self.push(filaAux.pop())
     
     def removeAllBySliceDiverso(self, start: int, end: int):
-        queueSize = self.lengthDiverso()
-        if queueSize < (end + 1) or queueSize < (start + 1):
+        if not (0 <= start < self.lengthElementar() and 0 <= end < self.lengthElementar()):
             print("Slice out of range")
             return None
 
-        filaAux = Fila(self.dado, self.prox)
-        counter = 0
-        
-        while self.dado is not None:
-            self.pop()
+        filaAux = Fila()
+        listAux = []
 
-        while counter != start: 
-            self.push(filaAux.dado)
-            filaAux.dado = filaAux.prox.dado
-            filaAux.prox = filaAux.prox.prox
-            counter += 1
-        
-        while counter != (end + 1):
-            filaAux.dado = filaAux.prox.dado
-            filaAux.prox = filaAux.prox.prox
-            counter += 1
+        while self.dado is not None:
+            filaAux.push(self.pop())
         
         while filaAux.dado is not None:
-            self.push(filaAux.dado)
-            filaAux.dado = filaAux.prox.dado
-            filaAux.prox = filaAux.prox.prox
+            dado = filaAux.pop()
+            listAux.append(dado)
+        
+        for i, e in enumerate(listAux):
+            if start <= i <= end:
+                continue
+
+            self.push(e)
 
     #Q19
     def setValueIndexElementar(self, index, value):
@@ -575,5 +565,5 @@ if __name__ == "__main__":
     test = Fila()
     test.pushWithArray([1, 2, 3, 4, 5])
     test.print()
-    print(test.lastDiverso(test))
+    print(test.removeAllBySliceDiverso(2, 3))
     test.print()

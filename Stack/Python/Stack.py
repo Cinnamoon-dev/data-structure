@@ -395,10 +395,13 @@ class Pilha:
             return None
         
         aux = self
+        counter = self.lengthDiverso - 1
 
-        while aux is not None:
+        for i in range(counter, -1, -1):
             if aux.dado == value:
                 aux.pop()
+                return
+
             aux = aux.prox
 
     #Q16
@@ -420,20 +423,16 @@ class Pilha:
         if value is None:
             return
 
-        pilhaAux = Pilha()
-        while self.dado is not None:
-            if self.dado != value:
-                pilhaAux.insert(self.dado)
-                self.dado = self.prox.dado
-                self.prox = self.prox.prox
-                continue
-            self.dado = self.prox.dado
-            self.prox = self.prox.prox
+        aux = self
+        counter = self.lengthDiverso(test) - 1
 
-        while pilhaAux.dado is not None:
-            self.insert(pilhaAux.dado)
-            pilhaAux.dado = pilhaAux.prox.dado
-            pilhaAux.prox = pilhaAux.prox.prox
+        for i in range(counter, -1, -1):
+            if aux.dado == value:
+                aux.pop()
+                continue
+
+            aux = aux.prox
+
 
     #Q17
     def removeAllByIndexesElementar(self, indexes: list):
@@ -448,7 +447,7 @@ class Pilha:
             pilhaAux.insert(self.pop())
         
         while counter < length:
-            if compareEqualsValueWithListOfValues(counter, indexes):
+            if counter in indexes:
                 pilhaAux.pop()
                 counter += 1
                 continue
@@ -469,8 +468,7 @@ class Pilha:
     
     #Q18
     def removeAllBySliceElementar(self, start: int, end: int):
-        stackSize = self.lengthElementar()
-        if stackSize < (end + 1) or stackSize < (start + 1):
+        if not (0 <= start < self.lengthElementar() and 0 <= end < self.lengthElementar()):
             print("Slice out of range")
             return None
 
@@ -480,7 +478,7 @@ class Pilha:
         while self.dado is not None:
             pilhaAux.insert(self.pop())
         
-        while counter != start: # [1, 2, 3, 4, 5] e (1, 3)
+        while counter != start:
             self.insert(pilhaAux.pop())
             counter += 1
         
@@ -492,34 +490,26 @@ class Pilha:
             self.insert(pilhaAux.pop())
     
     def removeAllBySliceDiverso(self, start: int, end: int):
-        stackSize = self.lengthDiverso()
-        if stackSize < (end + 1) or stackSize < (start + 1):
+        if not (0 <= start < self.lengthElementar() and 0 <= end < self.lengthElementar()):
             print("Slice out of range")
             return None
 
         pilhaAux = Pilha()
-        counter = 0
+        listAux = []
 
         while self.dado is not None:
-            pilhaAux.insert(self.dado)
-            self.dado = self.prox.dado
-            self.prox = self.prox.prox
-        
-        while counter != start:
-            self.insert(pilhaAux.dado)
-            pilhaAux.dado = pilhaAux.prox.dado
-            pilhaAux.prox = pilhaAux.prox.prox
-            counter += 1
-        
-        while counter != (end + 1):
-            pilhaAux.dado = pilhaAux.prox.dado
-            pilhaAux.prox = pilhaAux.prox.prox
-            counter += 1
+            pilhaAux.insert(self.pop())
         
         while pilhaAux.dado is not None:
-            self.insert(pilhaAux.dado)
-            pilhaAux.dado = pilhaAux.prox.dado
-            pilhaAux.prox = pilhaAux.prox.prox
+            dado = pilhaAux.pop()
+            listAux.append(dado)
+        
+        for i, e in enumerate(listAux):
+            if start <= i <= end:
+                continue
+
+            self.insert(e)
+        
 
     #Q19
     def setValueIndexElementar(self, index, value):
@@ -640,5 +630,5 @@ if __name__ == "__main__":
     test = Pilha()
     test.initByArray([1, 2, 3, 4, 5])
     test.print()
-    print(test.lastDiverso(test))
+    print(test.removeAllBySliceDiverso(2,3))
     test.print()

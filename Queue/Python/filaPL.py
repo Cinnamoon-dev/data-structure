@@ -53,6 +53,16 @@ class Fila: # index 0 = começo , index n = final
 
         return dado
 
+    def removeWithArray(self): # Sai do começo
+        if self.dado is None:
+            return None
+        
+        listAux = self.toArray()
+        dado = listAux.remove(0)
+        self.insertWithArray(listAux)
+
+        return dado
+
     def print(self):
         array = self.toArray([])
         print(array)

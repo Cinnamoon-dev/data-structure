@@ -38,6 +38,16 @@ class Pilha:
         self.dado = self.prox.dado
         self.prox = self.prox.prox
         return dado
+    
+    def popWithArray(self):
+        if self.dado is None:
+            return None
+        
+        listAux = self.toArray()
+        dado = listAux.pop(0)
+        self.pushWithArray(listAux)
+
+        return dado
 
     def print(self):
         array = self.toArray([])

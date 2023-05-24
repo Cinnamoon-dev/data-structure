@@ -10,9 +10,9 @@ class Pilha:
             return
         
         for i in array:
-            self.insert(i)
+            self.push(i)
         
-    def insert(self, dado=None):
+    def push(self, dado=None):
         if dado is None:
             return
         
@@ -55,22 +55,26 @@ class Pilha:
         return array
 
     def pushWithClassLinkedList(self, dado=None):
-        if dado is None:
+        if dado is None or dado.dado is None:
             return
         
-        self.insert(dado)
+        aux = dado
+
+        while aux is not None:
+            self.push(aux.dado)
+            aux = aux.prox
 
     def pushWithArray(self, array=None):
         if array is None or len(array) == 0:
             return
 
         for i in array:
-            self.insert(i)
+            self.push(i)
     
     #Q4
     def peakElementar(self):
         peak = self.pop()
-        self.insert(peak)
+        self.push(peak)
         
         return peak
 
@@ -78,13 +82,13 @@ class Pilha:
         return self.dado
     
     #Q5
-    def isEmptyElementar(self):
+    def isEmptyElementar(self) -> bool:
         dadoAtual = self.pop()
 
         if dadoAtual is None:
             return True
         
-        self.insert(dadoAtual)
+        self.push(dadoAtual)
         return False
     
     def isEmptyDiverso(self):
@@ -139,7 +143,7 @@ class Pilha:
         pilhaAux = Pilha()
         
         while self.dado is not None:
-            pilhaAux.insert(self.pop())
+            pilhaAux.push(self.pop())
 
         valueIndex = None
         counter = 0
@@ -150,7 +154,7 @@ class Pilha:
             if counter == index:
                 valueIndex = value
 
-            self.insert(value)
+            self.push(value)
             counter += 1
         
         return valueIndex
@@ -182,13 +186,13 @@ class Pilha:
         pilhaAux = Pilha()
         
         while self.dado is not None:
-            pilhaAux.insert(self.pop())
+            pilhaAux.push(self.pop())
         
         index = None
         counter = 0
 
         while pilhaAux.dado is not None:
-            self.insert(pilhaAux.pop()) 
+            self.push(pilhaAux.pop()) 
             if self.peakElementar() == value:
                 index = counter
             counter += 1
@@ -224,10 +228,10 @@ class Pilha:
         counter = 0
 
         while self.dado is not None:
-            pilhaAux.insert(self.pop())
+            pilhaAux.push(self.pop())
 
         while pilhaAux.dado is not None:
-            self.insert(pilhaAux.pop())
+            self.push(pilhaAux.pop())
             if self.peakElementar() == value:
                 indexes.append(counter)
             counter += 1
@@ -259,10 +263,10 @@ class Pilha:
         counter = 0
 
         while self.dado is not None:
-            pilhaAux.insert(self.pop())
+            pilhaAux.push(self.pop())
 
         while pilhaAux.dado is not None:
-            self.insert(pilhaAux.pop())
+            self.push(pilhaAux.pop())
             if counter in indexes:
                 values.append(self.peakElementar())
             counter += 1
@@ -292,24 +296,24 @@ class Pilha:
         pilhaAux = Pilha()
 
         while self.dado is not None:
-            pilhaAux.insert(self.pop())
+            pilhaAux.push(self.pop())
         
         counter = 0
         slice = []
         
         while counter != begin:
-            self.insert(pilhaAux.pop())
+            self.push(pilhaAux.pop())
             counter += 1
         
         while counter != (end + 1):
             value = pilhaAux.pop()
             slice.append(value)
 
-            self.insert(value)
+            self.push(value)
             counter += 1
         
         while pilhaAux.dado is not None:
-            self.insert(pilhaAux.pop())
+            self.push(pilhaAux.pop())
 
         return slice
 
@@ -321,14 +325,14 @@ class Pilha:
         pilhaAux = Pilha()
 
         while self.dado is not None:
-            pilhaAux.insert(self.pop())
+            pilhaAux.push(self.pop())
 
         slice = []
 
         for i in range(0, pilhaAux.lengthDiverso()):
             if begin <= i <= end:
                 slice.append(pilhaAux.dado)
-            self.insert(pilhaAux.pop())
+            self.push(pilhaAux.pop())
              
         return slice
     
@@ -347,7 +351,7 @@ class Pilha:
         counter = 0
 
         while self.dado is not None:
-            pilhaAux.insert(self.pop())
+            pilhaAux.push(self.pop())
 
         while pilhaAux.dado is not None:
             if counter == index:
@@ -355,7 +359,7 @@ class Pilha:
                 counter += 1
                 continue
 
-            self.insert(pilhaAux.pop())
+            self.push(pilhaAux.pop())
             counter += 1
 
     def removeByIndexDiverso(self, index):
@@ -363,17 +367,17 @@ class Pilha:
         pilhaAux = Pilha()
         
         while self.dado is not None:
-            pilhaAux.insert(self.pop())
+            pilhaAux.push(self.pop())
 
         for i in range(counter, -1, -1):
             if i == index:
                 self.pop()
                 break
 
-            pilhaAux.insert(self.pop())
+            pilhaAux.push(self.pop())
         
         while pilhaAux.dado is not None:
-            self.insert(pilhaAux.pop())
+            self.push(pilhaAux.pop())
 
     #Q15
     def removeByValueElementar(self, value=None):
@@ -383,12 +387,12 @@ class Pilha:
         pilhaAux = Pilha()
 
         while self.dado != value and self.dado is not None:
-            pilhaAux.insert(self.pop())
+            pilhaAux.push(self.pop())
         
         self.pop()
 
         while pilhaAux.dado is not None:
-            self.insert(pilhaAux.pop())
+            self.push(pilhaAux.pop())
     
     def removeByValueDiverso(self, value=None):
         if value is None or self.dado is None:
@@ -412,12 +416,12 @@ class Pilha:
         pilhaAux = Pilha()
         while self.dado is not None:
             if self.dado != value:
-                pilhaAux.insert(self.pop())
+                pilhaAux.push(self.pop())
                 continue
             self.pop()
 
         while pilhaAux.dado is not None:
-            self.insert(pilhaAux.pop())
+            self.push(pilhaAux.pop())
     
     def removeAllByValueDiverso(self, value=None):
         if value is None:
@@ -444,14 +448,14 @@ class Pilha:
         length = self.lengthElementar()
 
         while self.dado is not None:
-            pilhaAux.insert(self.pop())
+            pilhaAux.push(self.pop())
         
         while counter < length:
             if counter in indexes:
                 pilhaAux.pop()
                 counter += 1
                 continue
-            self.insert(pilhaAux.pop())
+            self.push(pilhaAux.pop())
             counter += 1
 
     def removeAllByIndexesDiverso(self, indexes: list):
@@ -476,10 +480,10 @@ class Pilha:
         counter = 0
 
         while self.dado is not None:
-            pilhaAux.insert(self.pop())
+            pilhaAux.push(self.pop())
         
         while counter != start:
-            self.insert(pilhaAux.pop())
+            self.push(pilhaAux.pop())
             counter += 1
         
         while counter != (end + 1):
@@ -487,7 +491,7 @@ class Pilha:
             counter += 1
         
         while pilhaAux.dado is not None:
-            self.insert(pilhaAux.pop())
+            self.push(pilhaAux.pop())
     
     def removeAllBySliceDiverso(self, start: int, end: int):
         if not (0 <= start < self.lengthElementar() and 0 <= end < self.lengthElementar()):
@@ -498,7 +502,7 @@ class Pilha:
         listAux = []
 
         while self.dado is not None:
-            pilhaAux.insert(self.pop())
+            pilhaAux.push(self.pop())
         
         while pilhaAux.dado is not None:
             dado = pilhaAux.pop()
@@ -508,7 +512,7 @@ class Pilha:
             if start <= i <= end:
                 continue
 
-            self.insert(e)
+            self.push(e)
         
 
     #Q19
@@ -522,16 +526,16 @@ class Pilha:
         counter = 0
 
         while self.dado is not None:
-            pilhaAux.insert(self.pop())
+            pilhaAux.push(self.pop())
         
         while pilhaAux.dado is not None:
             if counter == index:
                 pilhaAux.pop()
-                self.insert(value)
+                self.push(value)
                 counter += 1
                 continue
 
-            self.insert(pilhaAux.pop())
+            self.push(pilhaAux.pop())
             counter += 1
     
     def setValueIndexDiverso(self, index, value):
@@ -544,7 +548,7 @@ class Pilha:
         counter = 0
 
         while self.dado is not None:
-            pilhaAux.insert(self.dado)
+            pilhaAux.push(self.dado)
             self.dado = self.prox.dado
             self.prox = self.prox.prox
         
@@ -552,11 +556,11 @@ class Pilha:
             if counter == index:
                 pilhaAux.dado = pilhaAux.prox.dado
                 pilhaAux.prox = pilhaAux.prox.prox
-                self.insert(value)
+                self.push(value)
                 counter += 1
                 continue
 
-            self.insert(pilhaAux.dado)
+            self.push(pilhaAux.dado)
             pilhaAux.dado = pilhaAux.prox.dado
             pilhaAux.prox = pilhaAux.prox.prox
             counter += 1
@@ -572,15 +576,15 @@ class Pilha:
         counter = 0
 
         while self.dado is not None:
-            pilhaAux.insert(self.pop())
+            pilhaAux.push(self.pop())
         
         while pilhaAux.dado is not None:
             if compareEqualsValueWithListOfValues(counter, indexes):
                 pilhaAux.pop()
-                self.insert(elements[indexes.index(counter)])
+                self.push(elements[indexes.index(counter)])
                 counter += 1
             
-            self.insert(pilhaAux.pop())
+            self.push(pilhaAux.pop())
             counter += 1
 
     def setValuesInIndexesDiverso(self, indexes: list, elements: list):
@@ -593,7 +597,7 @@ class Pilha:
         counter = 0
 
         while self.dado is not None:
-            pilhaAux.insert(self.dado)
+            pilhaAux.push(self.dado)
             self.dado = self.prox.dado
             self.prox = self.prox.prox
         
@@ -601,10 +605,10 @@ class Pilha:
             if compareEqualsValueWithListOfValues(counter, indexes):
                 pilhaAux.dado = pilhaAux.prox.dado
                 pilhaAux.prox = pilhaAux.prox.prox
-                self.insert(elements[indexes.index(counter)])
+                self.push(elements[indexes.index(counter)])
                 counter += 1
             
-            self.insert(pilhaAux.dado)
+            self.push(pilhaAux.dado)
             pilhaAux.dado = pilhaAux.prox.dado
             pilhaAux.prox = pilhaAux.prox.prox
             counter += 1
@@ -629,6 +633,10 @@ def compareValueWithLessThanListOfValues(value, listOfValues: list):
 if __name__ == "__main__":
     test = Pilha()
     test.initByArray([1, 2, 3, 4, 5])
+    test1 = Pilha()
+    test1.initByArray([6, 7, 8, 9, 10])
     test.print()
-    print(test.removeAllBySliceDiverso(2,3))
+    test.pushWithClassLinkedList(test1)
+    test.print()
+    #print(test.removeAllBySliceDiverso(2,3))
     test.print()

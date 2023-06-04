@@ -20,7 +20,7 @@ class Pilha :
 
         return dado
 
-    def pop( self ) -> int:
+    def pop( self ):
 
         apagado = self.dado
 
@@ -486,22 +486,23 @@ class Pilha :
 
     # Q20 Elementar Change my stack values with a list of values and a list of indexs 
     def setValuesInIndexesElementar( self, indexs, elements ) -> bool:
-        
-        counter_two = 0 # contador dos elements
-        limite_loops = len( indexs )
-        counter = 0 
+
+        counter_two = 0 # vai ser no maximo do tamanho da minha pilha
+        limite_loops = len(indexs)
+        counter_one = 0 # vai ser no maximo do tamanho dos vetores de entrada
 
         while counter_two < limite_loops:
             aux = self
 
             while aux is not None:
 
-                if counter == indexs[ counter_two ]:
-                    aux.dado = elements[ counter_two ]
+                if counter_one == indexs[ counter_two ]:
+                    aux.dado = elements[ counter_two  ]
 
-                counter += 1
+                counter_one += 1
                 aux = aux.prox
 
+            counter_one = 0
             counter_two += 1
 
         return True
@@ -512,7 +513,7 @@ class Pilha :
         counter_one = 0
 
         for index in indexs:
-            self.setValueInIndexGeneric(index,elements[counter_one])
+            self.setValueInIndexGeneric( index, elements[counter_one] )
             counter_one += 1
 
         return True
@@ -522,129 +523,136 @@ if __name__ == '__main__':
 
     # populando com array 
     pilha = Pilha()
-    pilha.popular_com_array(["pedro",'pedro','henrique', 'barreto','freires'])
+    print("\n popular com array", "#"*10)
+    pilha.popular_com_array(['pedro','henrique', 'barreto','freires'])
     pilha.list()
     print('\npop',"#"*10)
     pilha.pop()
     pilha.list()
     print('\npeak',"#"*10)
-    print(pilha.peakElementar())
-    print(pilha.peakGenerico())
+    print(pilha.peakElementar(), "Elementar")
+    print(pilha.peakGenerico(), "Generico")
     print('\nisEmpty',"#"*10)
-    print(pilha.isEmptyGeneric())
-    print(pilha.isEmptyElementar())
+    print(pilha.isEmptyGeneric(), "Generico")
+    print(pilha.isEmptyElementar(), "Elementar")
     print('\nTam. Pilha',"#"*10)
-    print(pilha.tamanhoDaPilhaElementar())
-    print(pilha.tamanhoDaPilhaGeneric())
+    print(pilha.tamanhoDaPilhaElementar(), "Elementar")
+    print(pilha.tamanhoDaPilhaGeneric(), "Generico")
     print('\nLast Element',"#"*10)
-    print(pilha.lastElementElementar())
-    print(pilha.lastElementGeneric())
+    print(pilha.lastElementElementar(), "Elementar")
+    print(pilha.lastElementGeneric(), "Generico")
     print('\nGet Value by Index',"#"*10)
-    print(pilha.getValueByIndexElementar(1))
-    print(pilha.getValueByIndexGeneric(1))
+    print(pilha.getValueByIndexElementar(1), "Elementar")
+    print(pilha.getValueByIndexGeneric(1), "Generico")
     print('\nGet Index By Value',"#"*10)
-    print(pilha.getIndexByValueElementar('pedro'))
-    print(pilha.getIndexByValueGeneric('pedro'))
+    print(pilha.getIndexByValueElementar('pedro'), "Elementar")
+    print(pilha.getIndexByValueGeneric('pedro'), "Generico")
     print('\nGet All Index by Value',"#"*10)
-    print(pilha.getAllIndexByValueGenerico(1))
-    print(pilha.getAllIndexByValueElementar(1))
+    print(pilha.getAllIndexByValueElementar(1), "Elementar")
+    print(pilha.getAllIndexByValueGenerico(1), "Generico")
     print('\nGet All Values by Indexs',"#"*10)
-    print(pilha.getValuesByIndexsElementar( [2,1]))
-    print(pilha.getValuesByIndexsGenerico([1,2]))
+    print(pilha.getValuesByIndexsElementar( [1,2]), "Elementar")
+    print(pilha.getValuesByIndexsGenerico([1,2]), "Generico")
     print('\nGet Values by Slice',"#"*10)
-    print(pilha.getValuesBySliceElementar(1,2))
-    print(pilha.getValuesBySliceGeneric(1,2))
+    print(pilha.getValuesBySliceElementar(1,2), "Elementar")
+    print(pilha.getValuesBySliceGeneric(1,2), "Generico")
     
-    print('\nRemove All',"#"*10)
+    print('\nRemove All',"#"*10, "Elementar")
     pilha.removeAllElementar()
     pilha.list()
-    pilha.popular_com_array(["pedro",'pedro', 'barreto','freires', 'souza','andrade','bernado','campos'])
+    pilha.popular_com_array(['pedro', 'barreto','freires', 'souza','andrade','bernado','campos'])
+    
+    print('\nRemove All',"#"*10, "Generico")
     pilha.removeAllGeneric()
     pilha.list()
     pilha.popular_com_array(["pedro",'henrique', 'barreto','freires'])
-    pilha.list()
     
-    print('\nRemove by index ',"#"*10)
-    pilha.list()
+    print("\n### removing index 2  ####", "Elementar")
     pilha.removeByIndexElementar(2)
-    print('-'*5)
+    pilha.list()
+
+    print("\n### removing index 2  ####", "Generico")
     pilha.removeByIndexGenerico(2)
     pilha.list()
-    print('\nRemove by Value ',"#"*10)
     
+    print('\nRemove by Value ',"#"*10)
     pilha.removeAllGeneric()
-    pilha.popular_com_array(["pedro",'pedro', 'barreto','freires', 'souza','andrade','bernado','campos'])
+    pilha.popular_com_array( ["pedro",'henrique','barreto', 'freires'])
     pilha.removeFirstElementByValueGenerico('pedro')
     pilha.list()
     print('-'*5)
 
     pilha.removeAllGeneric()
-    pilha.popular_com_array(["pedro",'pedro', 'barreto','freires', 'souza','andrade','bernado','campos'])
+    pilha.popular_com_array(["pedro",'henrique','barreto', 'freires'])
     pilha.removeFirstElementByValueElementar('pedro')
     pilha.list()
 
-    print('\nRemove All by Value ',"#"*10)
+    print('\nRemove All by a Value ',"#"*10)
     
     pilha.removeAllGeneric()
-    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.popular_com_array( ["pedro",'henrique','barreto', 'freires'])
     pilha.removeAllByValueElementar('pedro')
     pilha.list()
     print('-'*5)
     
     pilha.removeAllGeneric()
-    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.popular_com_array(["pedro",'henrique','barreto', 'freires'])
     pilha.removeAllByValueGeneric('pedro')
     pilha.list()
     
     print('\nRemove All by indexs  ',"#"*10)
 
     pilha.removeAllGeneric()
-    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.popular_com_array(["pedro",'henrique','barreto', 'freires'])
     pilha.removeAllByIndexesElementar([1,2])
     pilha.list()
     print('-'*5)
     
     pilha.removeAllGeneric()
-    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.popular_com_array(["pedro",'henrique','barreto', 'freires'])
     pilha.removeAllByIndexesElementar([1,2])
     pilha.list()
 
     print('\nRemove All by slice  ',"#"*10)
 
     pilha.removeAllGeneric()
-    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
-    pilha.removeAllBySliceElementar(0,4) # bug here ? 
+    pilha.popular_com_array(["pedro",'henrique','barreto', 'freires'])
+    print("removing... , slice : (0,4), Elementar")
+    pilha.removeAllBySliceElementar(0,4)
     pilha.list()
     print('-'*5)
 
     pilha.removeAllGeneric()
-    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.popular_com_array(["pedro",'henrique','barreto', 'freires'])
+    print("removing... , slice : (0,4), Elementar")
     pilha.removeAllBySliceGeneric(0,4)
     pilha.list()
 
     print('\nSet Value in Index Elementar',"#"*10)
 
     pilha.removeAllGeneric()
-    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.popular_com_array(["pedro",'henrique','barreto', 'freires'])
     pilha.setValueInIndexElementar(0,'catatau')
     pilha.list()
     print('-'*5)
 
     pilha.removeAllGeneric()
-    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.popular_com_array(["pedro",'henrique','barreto', 'freires'])
     pilha.setValueInIndexGeneric(0,'catatau')
     pilha.list()
 
     print('\n Set Values in Indexs',"#"*10)
 
     pilha.removeAllGeneric()
-    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.popular_com_array(["pedro",'henrique','barreto', 'freires'])
+    print("index : [0,2], array : ['catatau', 'iceberg']", "Generic")
     pilha.setValuesInIndexesGenerico([0,2],['catatau','iceberg'])
     pilha.list()
     print('-'*5)
 
-    pilha.removeAllGeneric()
-    pilha.popular_com_array(["pedro", 'souza','andrade','bernado','pedro'])
+    pilha.removeAllElementar()
+    pilha.popular_com_array(["pedro",'henrique','barreto', 'freires'])
+    print("index : [0,2], array : ['catatau', 'iceberg']", "Elementar")
     pilha.setValuesInIndexesElementar([0,2],['catatau','iceberg'])
     pilha.list()
 

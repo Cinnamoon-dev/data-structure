@@ -487,6 +487,9 @@ class Pilha :
     # Q20 Elementar Change my stack values with a list of values and a list of indexs 
     def setValuesInIndexesElementar( self, indexs, elements ) -> bool:
 
+        if len(indexs) != len(elements):
+            return -1
+
         counter_two = 0 # vai ser no maximo do tamanho da minha pilha
         limite_loops = len(indexs)
         counter_one = 0 # vai ser no maximo do tamanho dos vetores de entrada
@@ -632,13 +635,15 @@ if __name__ == '__main__':
 
     pilha.removeAllGeneric()
     pilha.popular_com_array(["pedro",'henrique','barreto', 'freires'])
-    pilha.setValueInIndexElementar(0,'catatau')
+    print("(3,'catatau'), Elementar")
+    pilha.setValueInIndexElementar(3,'catatau')
     pilha.list()
     print('-'*5)
 
     pilha.removeAllGeneric()
     pilha.popular_com_array(["pedro",'henrique','barreto', 'freires'])
-    pilha.setValueInIndexGeneric(0,'catatau')
+    print("(3,'catatau'), Generic")
+    pilha.setValueInIndexGeneric(3,'catatau')
     pilha.list()
 
     print('\n Set Values in Indexs',"#"*10)

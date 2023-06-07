@@ -44,9 +44,8 @@ class Pilha :
     # Q4 retorna o primeiro conforme a estrutura 
     def peakElementar( self ) -> int:
         # primeiro elemento de uma pilha é o topo 
-        aux_data : int = self.pop()
-        self.pushWithClassLinkedList(aux_data)
-        
+        aux_pilha = Pilha( self.dado, self.prox )
+        aux_data = aux_pilha.pop()
         return aux_data
 
     # Q4 Generico primeiro conforme a estrutura
@@ -56,14 +55,9 @@ class Pilha :
     # Q5 Elementar averiguar se esta vazio 
     def isEmptyElementar( self ) -> bool:
         # meu pop só retorna none caso meu self n tenha referencia.
-        data_temp = self.pop()
-        
-        if data_temp is None:
-            return True
-        
-        self.pushWithClassLinkedList(data_temp)
-
-        return False
+        aux_pilha = Pilha( self.dado , self.prox )
+        aux_data = aux_pilha.pop()
+        return True if aux_data is None else False
         
     # Q5 Generico averiguar se esta vazio
     def isEmptyGeneric( self ) -> bool:
@@ -72,7 +66,7 @@ class Pilha :
     # Q6 Elementar Return length of my structure
     def tamanhoDaPilhaElementar( self ) -> int:
         # usando uma pilha aux
-        aux_pilha = Pilha(self.dado, self.prox)
+        aux_pilha = Pilha( self.dado, self.prox )
         counter = 0
 
         while aux_pilha.pop() is not None:
@@ -81,7 +75,7 @@ class Pilha :
         return counter
     
     # Q6 Generic Return length of my structure
-    def tamanhoDaPilhaGeneric( self ) -> int:
+    def tamanhoDaPilhaGeneric( self ) -> int :
         # usando um ponteiro aux 
         aux_pilha : Pilha = self
         counter : int = 0
@@ -95,12 +89,12 @@ class Pilha :
     # Q7 Elementar Return last element in my scruture
     def lastElementElementar( self ) -> int:
 
-        aux = self 
+        aux_pilha = Pilha( self.dado, self.prox )
 
-        while not aux.prox.dado is None:
-            aux = aux.prox
+        while not aux_pilha.prox is None:
+            aux_pilha = aux_pilha.prox
     
-        return aux.dado
+        return aux_pilha.dado
 
     # Q7 Generico Return last element in my scruture
     def lastElementGeneric( self ) -> int:

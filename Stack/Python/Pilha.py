@@ -48,7 +48,7 @@ class Pilha :
         for value in array_for_insert:
             self.pushWithClassLinkedList(value)
 
-    def pushWithClassLinkedList( self, dado : int ) :
+    def pushWithClassLinkedList( self, dado  ) :
 
         new_pilha = Pilha( self.dado, self.prox )
         self.dado = dado
@@ -56,7 +56,7 @@ class Pilha :
 
         return dado
 
-    def pop( self ) -> int:
+    def pop( self ) :
 
         apagado = self.dado
 
@@ -78,15 +78,15 @@ class Pilha :
             aux = aux.prox
 
     # Q4 retorna o primeiro conforme a estrutura 
-    def peakElementar( self ) -> int:
+    def peakElementar( self ) :
         # primeiro elemento de uma pilha é o topo 
-        aux_data : int = self.pop()
+        aux_data = self.pop()
         self.pushWithClassLinkedList(aux_data)
         
         return aux_data
 
     # Q4 Generico primeiro conforme a estrutura
-    def peakGenerico( self ) -> int:
+    def peakGenerico( self ) :
         return self.dado
     
     # Q5 Elementar averiguar se esta vazio 
@@ -131,16 +131,8 @@ class Pilha :
     # Q7 Elementar Return last element in my scruture
     def lastElementElementar( self ) :
 
-        aux = self.create_aux_stack()
-
-        while True:
-
-            if aux.prox is None:
-                break
-            
-            data_temp = aux.pop()
-
-        return data_temp
+        aux = self.create_aux_inverted_stack()
+        return aux.peakElementar()
 
     # Q7 Generico Return last element in my scruture
     def lastElementGeneric( self ) :
@@ -153,21 +145,22 @@ class Pilha :
         return aux_pilha.dado
     
     # Q8 Elementar Return a determined value in a spcific index
-    def getValueByIndexElementar( self, index : int ) :
+    def getValueByIndexElementar( self, index  ) :
         counter = 0
+        data_temp = 1
         aux_pilha = self.create_aux_stack()
         
-        while counter != index and aux_pilha is not None:
+        while counter != index and data_temp is not None:
             counter += 1
-            aux_pilha.pop()
+            data_temp = aux_pilha.pop()
 
-        if aux_pilha is None:
+        if data_temp is None:
             return -1
         
         return aux_pilha.dado
     
     # Q8 Generic Return a determined value in a specific index
-    def getValueByIndexGeneric( self, index : int ) :
+    def getValueByIndexGeneric( self, index  ) :
 
         aux = self
         my_values = []
@@ -187,20 +180,20 @@ class Pilha :
         counter = 0
         aux_pointer = self.create_aux_stack()
 
-        while aux_pointer is not None:    
+        while aux_pointer.peakElementar() is not None:    
             
             if aux_pointer.pop() == dado:
                 return counter
             
             counter += 1
 
-        if aux_pointer is None:
+        if aux_pointer.peakElementar() is None:
             return -1
 
         return counter
     
     # Q9 Generic Return the first index that storage a specific value
-    def getIndexByValueGeneric( self, dado : int ):
+    def getIndexByValueGeneric( self, dado  ):
 
         counter = 0
         aux_pilha = Pilha( self.dado, self.prox )
@@ -214,13 +207,13 @@ class Pilha :
         return counter
     
     # Q10 Elementar Return a array of indexs that storage a specific value
-    def getAllIndexByValueElementar( self, dado : int ):
+    def getAllIndexByValueElementar( self, dado  ):
         
         counter = 0
         result = []
         aux_stack = self.create_aux_stack()
 
-        while aux_stack is not None:
+        while aux_stack.peakElementar() is not None:
 
             if aux_stack.pop() == dado:
                 result.append(counter)
@@ -230,7 +223,7 @@ class Pilha :
         return result
     
     # Q10 Generic Return a array of indexs that storage a specific value
-    def getAllIndexByValueGenerico( self, dado : int ) :
+    def getAllIndexByValueGenerico( self, dado  ) :
         
         result = []
         my_node = Pilha(self.dado, self.prox)
@@ -273,7 +266,7 @@ class Pilha :
         return result
     
     # Q12 Elementar return a array sliced of my array
-    def getValuesBySliceElementar(self, start : int , end : int ) :
+    def getValuesBySliceElementar(self, start  , end  ) :
         
         counter = 0
         result = []
@@ -290,7 +283,7 @@ class Pilha :
         return result
     
     # Q12 Generic return a array sliced of my array
-    def getValuesBySliceGeneric(self, start : int, end : int ) :
+    def getValuesBySliceGeneric(self, start , end  ) :
         result = []
 
         for index in range( start, end ):
@@ -314,12 +307,12 @@ class Pilha :
         return self
     
     # Q14 Elementar Remove a specific value in a determinate index
-    def removeByIndexElementar(self ,index : int) :
+    def removeByIndexElementar(self ,index ) :
 
         counter = 0
         pilha_aux = self.create_aux_inverted_stack()
 
-        while pilha_aux is not None:
+        while pilha_aux.peakElementar() is not None:
             
             if index == counter:
                 removed_element = pilha_aux.pop()
@@ -356,7 +349,7 @@ class Pilha :
         isValid = 1
         pilha_aux = self.create_aux_inverted_stack()
 
-        while pilha_aux is not None:
+        while pilha_aux.peakElementar() is not None:
             data_temp = pilha_aux.pop()
             
             if data_temp == dado and isValid != 0:
@@ -368,7 +361,7 @@ class Pilha :
         return dado
     
     # Q15 Generic Remove the first data that has equal dado value        
-    def removeFirstElementByValueGenerico( self, dado : int) :
+    def removeFirstElementByValueGenerico( self, dado ) :
 
         aux = self
         counter = 0 
@@ -388,7 +381,7 @@ class Pilha :
         return removed_element
 
     # Q16 Elementar Remove all datas with a specific value
-    def removeAllByValueElementar(self, value : int) :
+    def removeAllByValueElementar(self, value ) :
         
         pilha_aux = self.create_aux_inverted_stack()
 
@@ -404,7 +397,7 @@ class Pilha :
         return True
     
     # Q16 Generic Remove all datas with a specific value
-    def removeAllByValueGeneric( self, value : int ) -> bool:
+    def removeAllByValueGeneric( self, value  ) -> bool:
 
         counter = 0
         qtd_itens = self.tamanhoDaPilhaElementar()
@@ -429,7 +422,7 @@ class Pilha :
 
         for index in indexs:
             
-            while pilha_aux.dado is not None:
+            while pilha_aux.peakElementar() is not None:
                 
                 if index == counter:
                     pilha_aux.pop()
@@ -452,7 +445,7 @@ class Pilha :
         return True
     
     # Q18 Elementar Remove all datas starting in start and close in end
-    def removeAllBySliceElementar( self, start : int, end : int ) -> bool:
+    def removeAllBySliceElementar( self, start , end  ) -> bool:
 
         counter = 0
         aux_stack = self.create_aux_stack()
@@ -460,7 +453,7 @@ class Pilha :
         if start > end:
             return False
 
-        while aux_stack is not None:
+        while aux_stack.peakElementar() is not None:
 
             if counter >= start and counter < end:
                 # não adiciono esse intervalo
@@ -474,7 +467,7 @@ class Pilha :
         return True
 
     # Q18 Generic Remove all datas starting in start and close in end
-    def removeAllBySliceGeneric( self, start : int, end : int ) -> bool:
+    def removeAllBySliceGeneric( self, start , end  ) -> bool:
 
         if start > end:
             return False
@@ -507,7 +500,7 @@ class Pilha :
         return True
 
     # Q19 Generic Assignment a value for a specific index
-    def setValueInIndexGeneric(self, index : int , value : int) -> bool:
+    def setValueInIndexGeneric(self, index  , value ) -> bool:
         aux = self
     
         for index in range(index):

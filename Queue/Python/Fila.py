@@ -2,22 +2,24 @@ class Fila:
     
     def __init__(self, dado = None, prox = None ):
 
-        self.dado = dado # representa o primeiro No
-        self.prox = prox # representa o ultimo No
+        self.dado = dado
+        self.prox = prox
 
     def pushWithClassLinkedList(self, dado):
 
         if dado is None:
             return None 
-
+        
+        # logica para a fila sem dados
         if self.dado is None:
             self.dado = dado
             self.prox = None
             return dado
         
+        # lógica para a fila com dados 
         aux = self
 
-        while aux.prox is not None: # indo até o final ? 
+        while aux.prox is not None:
             aux = aux.prox
 
         new_celula = Fila(dado)
@@ -25,6 +27,12 @@ class Fila:
 
         return dado
 
+    def create_aux_queue():
+
+        # some logic is here 
+        new_queue = ""
+        return new_queue
+    
     def list(self):
 
         if self.dado is None:
@@ -39,7 +47,7 @@ class Fila:
         return None
     
     def popWithClassLinkedList(self):
-        
+        # first In first Out 
         if self.dado is None:
             return None
 
@@ -61,6 +69,7 @@ class Fila:
             return None
 
         new_queue = Fila(self.dado, self.prox)
+
         first_element = new_queue.popWithClassLinkedList()
 
         return first_element

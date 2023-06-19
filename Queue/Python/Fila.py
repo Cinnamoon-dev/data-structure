@@ -5,6 +5,13 @@ class Fila:
         self.dado = dado
         self.prox = prox
 
+    def insertWithArray( self , array ):
+        
+        for element in array:
+            self.pushWithClassLinkedList( element )
+
+        return True
+
     def pushWithClassLinkedList(self, dado):
 
         if dado is None:
@@ -16,7 +23,7 @@ class Fila:
             self.prox = None
             return dado
         
-        # lógica para a fila com dados 
+        # lógica para a fila com dados  
         aux = self
 
         while aux.prox is not None:
@@ -27,20 +34,14 @@ class Fila:
 
         return dado
 
-    def create_aux_queue():
-
-        # some logic is here 
-        new_queue = ""
-        return new_queue
-    
-    def list(self):
+    def list( self ):
 
         if self.dado is None:
             return None 
 
         aux = self
 
-        while( aux ):
+        while aux.prox is None:
             print( aux.dado )
             aux = aux.prox
 
@@ -62,25 +63,44 @@ class Fila:
         
         return deleted
     
+    def create_aux_queue( self ):
+        
+        new_queue = Fila()
+        aux_queue = Fila()
+        # criando uma fila auxiliar para o retorno
+        while True:
+            data_temp =  self.pop()
+
+            if data_temp is None:
+                break
+
+            new_queue.pushWithClassLinkedList(data_temp)
+            aux_queue.pushWithClassLinkedList(data_temp)
+
+        # recolocando todos os elementos na fila principal
+        while True:
+            data_temp = aux_queue.pop()
+
+            if data_temp is None:
+                break
+            
+            self.pushWithClassLinkedList(dado=data_temp)
+
+        # ordem dos elementos é mantida.
+        return new_queue
+
     # Q4 return the first element of my data structure
     def peekElementar(self):
-
-        if self.dado is None:
-            return None
-
-        new_queue = Fila(self.dado, self.prox)
-
-        first_element = new_queue.popWithClassLinkedList()
-
-        return first_element
+        aux_queue = self.create_aux_queue()
+        return aux_queue.popWithClassLinkedList()
     
     # Q4 return the first element of my data structure
-    def peekGeneric(self):
+    def peekGeneric( self ):
         return self.dado
 
     # Q5 return true if my queue is empty 
     def isEmptyElementar(self):
-        new_queue = Fila(dado=self.dado, prox=self.prox)
+        new_queue = self.create_aux_queue()
         return True if new_queue.popWithClassLinkedList() is None else False
     
     # Q5 return true if my queue is empty 
@@ -90,197 +110,180 @@ class Fila:
     # Q6 returns the quantify of elements in my queue
     def lenElementar(self):
         
-        aux = self 
-        quantidade = 1
+        quantidade = 0
+        new_queue = self.create_aux_queue()
+        
+        while True:
 
-        if self.dado is None:
-            return quantidade
-
-        while aux.prox is not None:
             quantidade += 1
-            aux = aux.prox
+            if new_queue.prox is None:
+                break
+            
+            new_queue = new_queue.prox
 
         return quantidade
     
     # Q6 returns the quantify of elements in my queue
     def lenGeneric(self):
+        
         quantidade = 0
+        aux_pointer = Fila(self.dado, self.prox)
 
-        if self.dado is None:
-            return quantidade
-
-        new_queue = Fila(self.dado, self.prox)
-
-        while new_queue.popWithClassLinkedList() is not None:
+        while aux_pointer.prox is not None:
             quantidade += 1
+            aux_pointer = aux_pointer.prox
 
         return quantidade
     
     # Q7 returns the last item in my structure 
     def lastElementar(self):
-        aux = self
         
-        while aux.prox is not None:
-            aux = aux.prox
+        new_queue = self.create_aux_queue()
         
-        return aux.dado
+        while True:
+            data_temp = new_queue.popWithClassLinkedList()
+            
+            if data_temp is None:
+                break
+
+            data = data_temp
+        
+        return data
         
     # Q7 return the last item in my structure 
     def lastGeneric(self):
-        new_queue = Fila(self.dado, self.prox)
+        aux_pointer = Fila(self.dado, self.prox)
+        tamanho_fila = self.lenGeneric()
         
-        for index in range(0, self.lenElementar()):
-            last_item = new_queue.popWithClassLinkedList()
+        # por padrão ja retorna tamanho - 1, eu subtraio - 1 para sobrar apenas 1 node 
+        for index in range( 0, tamanho_fila - 1 ):
+            last_item = aux_pointer.popWithClassLinkedList()
     
         return last_item
     
     # Q8 return a value in a specific index 
-    def getValueByIndexElementar(self, index):
+    def getValueByIndexElementar( self, index ):
 
-        if self.dado is None:
-            return -1
-
-        aux = self
         counter = 0 
+        data_temp = ''
+        aux_queue = self.create_aux_queue()
 
-        while aux is not None:
+        while data_temp is not None:
             
             if counter == index:
-                return aux.dado
+                return data_temp
             
             counter += 1 
-            aux = aux.prox 
+            data_temp = aux_queue.pop()
 
         return -1 # dont find
     
     # Q8
     def getValueByIndexGeneric(self, index):
         
-        if self.dado is None:
-            return None
-
-        new_queue = Fila(self.dado, self.prox)
-        length_queue = new_queue.lenElementar()
-        element = new_queue.popWithClassLinkedList()
+        aux_pointer = Fila(self.dado, self.prox)
+        length_queue = aux_pointer.lenElementar()
+        element = aux_pointer.popWithClassLinkedList()
         
-        for ind in range(index):
+        if index + 1 > length_queue:
+            return -1 # don't find 
 
-            if ind == length_queue:
-                return -1 # dont find
+        for ind in range(0, index):
+            aux_pointer = aux_pointer.prox
 
-            element = new_queue.popWithClassLinkedList()
-        
-        return element
+        return aux_pointer.dado
 
     # Q9 return the first index of a value in my struct
     def getIndexByValueElementar(self, value):
-        aux = self 
-        index = 0
 
-        if self.dado is None:
-            return -1
+        counter = 0
+        data_temp = ''
+        new_queue = self.create_aux_queue()
 
-        while aux.dado != value and aux.prox is not None:
-            index += 1
+        while data_temp is not None:
+
+            if value == data_temp:
+                return counter
             
-            if aux.dado != value and aux.prox is None:
-                return -1 
+            counter += 1
+            data_temp = new_queue.pop()
 
-            aux = aux.prox
-        
-        return index
+        return -1 # don't find
     
     # Q9 return the first index of a value in my struct
-    def getIndexByValueGeneric(self, value):
-        
-        if self.dado is None:
-            return -1
+    def getIndexByValueGeneric( self, value ):
         
         index = 0
-
-        new_queue = Fila(self.dado, self.prox)
-        item = new_queue.popWithClassLinkedList()
+        aux_pointer = Fila(self.dado, self.prox)
+        item = aux_pointer.popWithClassLinkedList()
 
         while item != value and item is not None:
             index += 1
-            item = new_queue.popWithClassLinkedList()
+            item = aux_pointer.popWithClassLinkedList()
 
         return index if item == value else -1
     
     # Q10 return a array of index of a item value
     def getAllIndexByValueElementar(self,value):
-        
-        if self.dado is None:
-            return []
 
-        indexs = []
         index = 0
-        aux = self
+        indexs = []
+        aux_queue = self.create_aux_queue()
 
-        while aux is not None:
+        while aux_queue is not None:
 
-            if aux.dado == value:
+            if data_temp == value:
                 indexs.append(index)
             
             index += 1
-            aux = aux.prox
+            data_temp = aux_queue.pop()
 
         return indexs
     
     # Q10 return a array of index of a item value
     def getAllIndexByValueGeneric(self,value):
-
-        if self.dado is None:
-            return []
         
         indexs = []
-        new_queue = Fila(self.dado, self.prox)
+        aux_pointer = Fila(self.dado, self.prox)
 
-        for index in range(0, new_queue.lenElementar()):
+        for index in range(0, aux_pointer.lenElementar()):
 
-            if new_queue.popWithClassLinkedList() == value:
+            if aux_pointer.dado == value:
                 indexs.append(index)
+            
+            aux_pointer = aux_pointer.prox
 
-        return indexs 
+        return indexs
     
     # Q11 return values in a specifics indexs
-    def getValuesByIndexsElementar(self, indexs):
+    def getValuesByIndexsElementar( self, indexs ):
 
-        if self.dado is None:
-            return []
-        
-        aux_one = self
-        index_i = 0 
+        # vou ter que andar tanto em indexs quanto na minha fila de dados.
+
         index_j = 0
         values = []
+        aux_one = self.create_aux_queue()
 
-        while aux_one is not None:    
+        for index_i in indexs:    
         
             index_j = 0
-            aux_two = self
+            aux_two = self.create_aux_queue()
 
             while aux_two is not None:
                 
-                try:
-                    if index_j == indexs[index_i]:
-                        values.append(aux_two.dado)
-                        break
-                except:
+                if index_j == indexs[index_i]:
+                    values.append(data_temp)
                     break
 
                 index_j += 1
-                aux_two = aux_two.prox
+                data_temp = aux_two.popWithClassLinkedList()
 
-            index_i += 1
-            aux_one = aux_one.prox
+            aux_one.popWithClassLinkedList()
 
         return values
     
     # Q11 return values in a specifics indexs
     def getValuesByIndexsGenerics(self, indexs):
-
-        if self.dado is None:
-            return []
 
         values = []
         index_j = 0

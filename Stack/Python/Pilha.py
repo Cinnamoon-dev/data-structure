@@ -4,6 +4,40 @@ class Pilha :
         self.dado = dado
         self.prox = prox 
 
+    # função criada para auxiliar nas questões elementares
+    def create_aux_stack(self):
+
+        stack_aux = Pilha()
+        stack_two = Pilha()
+
+        while True:
+            data_temp = self.pop()
+            
+            if data_temp is None:
+                break
+
+            stack_aux.pushWithClassLinkedList(data_temp)
+        
+        while True:
+            data_temp = stack_aux.pop()
+
+            if data_temp is None:
+                break
+
+            stack_two.pushWithClassLinkedList(data_temp)
+
+        return stack_two
+
+    def create_aux_inverted_stack(self):
+        # quando usar essa função self fica sem referencias para os nós
+        pilha_aux = Pilha()
+        
+        # inserindo os dados invertidos ! 
+        while self.peakElementar() is not None:
+            pilha_aux.pushWithClassLinkedList(self.pop())
+
+        return pilha_aux
+
     def popular_com_array(self, array_for_insert = None):
 
         if array_for_insert is None:

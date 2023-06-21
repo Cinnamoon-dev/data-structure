@@ -4,42 +4,6 @@ class Pilha :
         self.dado = dado
         self.prox = prox 
 
-    # função criada para auxiliar nas questões elementares
-    def create_aux_stack(self):
-
-        stack_aux = Pilha()
-        stack_two = Pilha()
-
-        # ordem n
-        while True:
-            data_temp = self.pop()
-            
-            if data_temp is None:
-                break
-
-            stack_aux.pushWithClassLinkedList(data_temp)
-        
-        # ordem n 
-        while True:
-            data_temp = stack_aux.pop()
-
-            if data_temp is None:
-                break
-
-            stack_two.pushWithClassLinkedList(data_temp)
-
-        return stack_aux
-
-    def create_aux_inverted_stack(self):
-        # quando usar essa função self fica sem referencias para os nós
-        pilha_aux = Pilha()
-        
-        # inserindo os dados invertidos ! 
-        while self.peakElementar() is not None:
-            pilha_aux.pushWithClassLinkedList(self.pop())
-
-        return pilha_aux
-
     def popular_com_array(self, array_for_insert = None):
 
         if array_for_insert is None:
@@ -73,7 +37,7 @@ class Pilha :
 
         aux = self
 
-        while aux.prox is not None :
+        while aux.dado is not None :
             print( aux.dado )
             aux = aux.prox
 
@@ -109,10 +73,17 @@ class Pilha :
     def tamanhoDaPilhaElementar( self ) :
         # usando uma pilha aux
         counter = 0
-        aux_pilha = self.create_aux_stack()
+        aux_pilha = create_aux_inverted_stack(self)
 
-        while aux_pilha.pop() is not None:
+        while True:
+            
+            data_temp = aux_pilha.pop()
+
+            if data_temp is None:
+                break
+
             counter += 1
+            self.pushWithClassLinkedList(data_temp)
 
         return counter
     
@@ -131,8 +102,18 @@ class Pilha :
     # Q7 Elementar Return last element in my scruture
     def lastElementElementar( self ) :
 
-        aux = self.create_aux_inverted_stack()
-        return aux.peakElementar()
+        aux_stack : Pilha = create_aux_inverted_stack( self )
+        last_element = aux_stack.peakElementar()
+
+        while True:
+            data_temp = aux_stack.pop()
+
+            if data_temp is None:
+                break
+
+            self.pushWithClassLinkedList(data_temp)
+
+        return last_element
 
     # Q7 Generico Return last element in my scruture
     def lastElementGeneric( self ) :
@@ -148,7 +129,7 @@ class Pilha :
     def getValueByIndexElementar( self, index  ) :
         counter = 0
         data_temp = 1
-        aux_pilha = self.create_aux_stack()
+        aux_pilha = create_aux_stack( self )
         
         while counter != index and data_temp is not None:
             counter += 1
@@ -178,7 +159,7 @@ class Pilha :
     def getIndexByValueElementar( self, dado ) :
         # esse counter é meu index
         counter = 0
-        aux_pointer = self.create_aux_stack()
+        aux_pointer = create_aux_stack( self )
 
         while aux_pointer.peakElementar() is not None:    
             
@@ -207,15 +188,20 @@ class Pilha :
         return counter
     
     # Q10 Elementar Return a array of indexs that storage a specific value
-    def getAllIndexByValueElementar( self, dado  ):
+    def getAllIndexByValueElementar( self, dado ):
         
-        counter = 0
         result = []
-        aux_stack = self.create_aux_stack()
+        counter = 0
+        aux_stack = create_aux_stack( self )
 
-        while aux_stack.peakElementar() is not None:
+        while True:
 
-            if aux_stack.pop() == dado:
+            data_temp = aux_stack.pop()
+
+            if data_temp is None:
+                break
+
+            if data_temp == dado:
                 result.append(counter)
             
             counter += 1
@@ -244,7 +230,7 @@ class Pilha :
         for index in indexs:
     
             counter = 0
-            aux = self.create_aux_stack()
+            aux = create_aux_stack( self )
 
             while counter != index:
                 aux.pop()
@@ -270,7 +256,7 @@ class Pilha :
         
         counter = 0
         result = []
-        aux = self.create_aux_stack()
+        aux = create_aux_stack( self )
 
         while counter != end :
 
@@ -307,26 +293,32 @@ class Pilha :
         return self
     
     # Q14 Elementar Remove a specific value in a determinate index
-    def removeByIndexElementar(self ,index ) :
+    def removeByIndexElementar( self , index ) :
 
-        counter = 0
-        pilha_aux = self.create_aux_inverted_stack()
+        removed_element = ''
+        counter = self.tamanhoDaPilhaElementar() - 1 
+        pilha_aux = create_aux_inverted_stack(self)
 
-        while pilha_aux.peakElementar() is not None:
+        while True:
             
             if index == counter:
+                counter -= 1
                 removed_element = pilha_aux.pop()
                 continue
 
-            counter += 1
-            # inserindo na ordem correta ! 
+            counter -= 1
             data_inserted = pilha_aux.pop()
+
+            if data_inserted is None:
+                break
+
+            # inserindo na ordem correta ! 
             self.pushWithClassLinkedList(data_inserted)
 
         return removed_element
     
     # Q14 Generic Remove a specific value in a determinate index
-    def removeByIndexGenerico(self ,index ) :
+    def removeByIndexGenerico( self ,index ) :
 
         aux = self
         
@@ -344,21 +336,36 @@ class Pilha :
         return dado_for_remove
     
     # Q15 Generic Remove the first data that has equal dado value 
-    def removeFirstElementByValueElementar(self, dado ):
+    def removeFirstElementByValueElementar( self, dado ):
         
-        isValid = 1
-        pilha_aux = self.create_aux_inverted_stack()
+        # Pilha invertida index's invertidos
+        try:
+            # o primeiro index do getAllIndexByValueElementar É o menor index
+            first_index = self.getAllIndexByValueElementar(dado)[0]
+        except IndexError:
+            return None
+        
+        removed_element = ''
+        counter = self.tamanhoDaPilhaElementar() - 1
+        pilha_aux = create_aux_inverted_stack( self )
 
-        while pilha_aux.peakElementar() is not None:
-            data_temp = pilha_aux.pop()
+        while True:
             
-            if data_temp == dado and isValid != 0:
-                isValid = 0
+            data_temp = pilha_aux.pop()
+
+            if counter == first_index:
+                # logica para remover
+                counter -= 1
+                removed_element = data_temp
                 continue
 
-            self.pushWithClassLinkedList(data_temp)
-
-        return dado
+            if data_temp is None:
+                break
+            
+            counter -= 1
+            self.pushWithClassLinkedList( data_temp )
+        
+        return removed_element
     
     # Q15 Generic Remove the first data that has equal dado value        
     def removeFirstElementByValueGenerico( self, dado ) :
@@ -383,13 +390,13 @@ class Pilha :
     # Q16 Elementar Remove all datas with a specific value
     def removeAllByValueElementar(self, value ) :
         
-        pilha_aux = self.create_aux_inverted_stack()
+        pilha_aux = create_aux_inverted_stack( self )
 
         while pilha_aux.peakElementar() is not None:
 
             data_temp = pilha_aux.pop()
             
-            if data_temp == value:
+            while data_temp == value:
                 data_temp = pilha_aux.pop()
             
             self.pushWithClassLinkedList( data_temp )
@@ -410,59 +417,55 @@ class Pilha :
             if index_to_remove == -1:
                 return True
             
-            self.removeByIndexElementar(index_to_remove)
             counter += 1 
+            self.removeByIndexElementar(index_to_remove)
 
         return True
     
     # Q17 Elementar Remove all datas with a specific index
     def removeAllByIndexesElementar( self, indexs ) -> bool:
-
-        pilha_aux = self.create_aux_inverted_stack()
-
-        for index in indexs:
-            
-            while pilha_aux.peakElementar() is not None:
-                
-                if index == counter:
-                    pilha_aux.pop()
-                
-                counter += 1   
-                self.pushWithClassLinkedList( pilha_aux.pop() )
-                
-            counter = 0
-            # crio minha stack invertida com os dados atualizados
-            pilha_aux = self.create_aux_inverted_stack()
-
-        return True
-    
-    # Q17 Generico Remove all datas with a specific index
-    def removeAllByIndexesGeneric(self, indexs ) -> bool:
-
+        
         for index in indexs:
             self.removeByIndexElementar(index)
+
+        return True
+
+    # Q17 Generico Remove all datas with a specific index
+    def removeAllByIndexesGeneric( self, indexs ) -> bool:
+
+        for index in indexs:
+
+            counter = 0
+            aux_pointer = self
+
+            while aux_pointer is not None:
+                
+                if counter == index:
+                    aux_pointer.pop()
+                
+                counter += 1
+                aux_pointer = aux_pointer.prox
 
         return True
     
     # Q18 Elementar Remove all datas starting in start and close in end
     def removeAllBySliceElementar( self, start , end  ) -> bool:
 
-        counter = 0
-        aux_stack = self.create_aux_stack()
-
         if start > end:
             return False
+        
+        counter = self.tamanhoDaPilhaElementar() - 1
+        aux_stack = create_aux_inverted_stack( self )
 
         while aux_stack.peakElementar() is not None:
 
             if counter >= start and counter < end:
-                # não adiciono esse intervalo
-                counter += 1 
+                counter -= 1 
                 aux_stack.pop()
                 continue
 
-            counter += 1
-            self.pushWithClassLinkedList(aux_stack.pop())
+            counter -= 1
+            self.pushWithClassLinkedList( aux_stack.pop() )
 
         return True
 
@@ -483,18 +486,18 @@ class Pilha :
     # Q19 Elementar Assignment a value for a specific index
     def setValueInIndexElementar( self, index:int, value:str ) -> bool:
 
-        counter = 0
-        aux_stack = self.create_aux_inverted_stack()
+        counter = self.tamanhoDaPilhaElementar() - 1 
+        aux_stack = create_aux_inverted_stack( self )
 
         while aux_stack.peakElementar() is not None:
             
             if counter == index :
-                counter += 1
+                counter -= 1
                 aux_stack.pop()
                 self.pushWithClassLinkedList( value ) # valor atualizado
                 continue
 
-            counter += 1
+            counter -= 1
             self.pushWithClassLinkedList( aux_stack.pop() )
 
         return True
@@ -517,7 +520,7 @@ class Pilha :
         limite_loops = len( indexs )
 
         while counter_two < limite_loops:
-            aux_stack = self.create_aux_inverted_stack()
+            aux_stack = create_aux_inverted_stack( self )
 
             while aux_stack.peakElementar() is not None:
 
@@ -542,3 +545,50 @@ class Pilha :
             counter_one += 1
 
         return True
+         
+# função criada para auxiliar nas questões elementares
+def create_aux_stack( Object : Pilha ):
+
+    stack_aux = Pilha()
+    stack_two = Pilha()
+
+    # ordem n
+    while True:
+        data_temp = Object.pop()
+        
+        if data_temp is None:
+            break
+
+        stack_aux.pushWithClassLinkedList(data_temp)
+    
+    # ordem n 
+    while True:
+        data_temp = stack_aux.pop()
+
+        if data_temp is None:
+            break
+
+        stack_two.pushWithClassLinkedList(data_temp)
+        Object.pushWithClassLinkedList( data_temp )
+
+    return stack_two
+
+def create_aux_inverted_stack( Object : Pilha ):
+    # quando usar essa função self fica sem referencias para os nós
+    pilha_aux = Pilha()
+    
+    # inserindo os dados invertidos ! 
+    while Object.peakElementar() is not None:
+        pilha_aux.pushWithClassLinkedList( Object.pop())
+
+    return pilha_aux
+
+
+if __name__ == "__main__":
+    test = Pilha()
+    test.popular_com_array([1, 2, 1, 4, 5])
+    newstack : Pilha = create_aux_stack( test )
+    newstack.list()
+    print("#######################")
+    print("removed element", newstack.removeAllByIndexesGeneric([1,3]))
+    newstack.list()

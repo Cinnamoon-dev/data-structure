@@ -1,93 +1,143 @@
-import copy
-
-class Tree:
+class BinaryTree:
     def __init__(self, data=None, left=None, right=None) -> None:
         self.data = data
-        self.left = left
-        self.right = right
-    
-    def insert(self, data=None) -> None:
-        if data is None:
-            return
+        self.left: BinaryTree = left
+        self.right: BinaryTree = right
 
+    def insert(self, data):
         if self.data is None:
             self.data = data
             return
-        
+
         current = self
 
         while True:
-            parent = current
-            
-            if data > current.data:
+            if current.data < data:
+                nextNode = current.right
+
+                if nextNode is None:
+                    current.right = BinaryTree(data)
+                    return
+
                 current = current.right
 
-                if current is None:
-                    parent.right = Tree(data)
+            else:
+                nextNode = current.left
+
+                if nextNode is None:
+                    current.left = BinaryTree(data)
                     return
 
-                continue
-            
-            if data < current.data:
                 current = current.left
 
-                if current is None:
-                    parent.left = Tree(data)
-                    return
-
-    def printPreOrder(self):
-        if self.data is not None:
+    def listPreOrder(self):
+        if self.data:
             print(self.data)
-        
-        if self.left is not None:
-            self.left.preOrder()
-        
-        if self.right is not None:
-            self.right.preOrder()  
-    
-    def preOrder(self):
-        if not self:
-            return []
-        
-        result = [self.data]
-        result.append(self.preOrder())
-        result.append(self.preOrder())
-        return result
 
-def preOrder(node: Tree):
-        if not node:
-            return []
+            if self.left:
+                self.left.listInOrder()
+
+            if self.right:
+                self.right.listInOrder()
+
+    def listPosOrder(self):
+        if self.data:
+            if self.left:
+                self.left.listInOrder()
+
+            if self.right:
+                self.right.listInOrder()
+
+            print(self.data)
+
+    def listInOrder(self):
+        if self.data:
+            if self.left:
+                self.left.listInOrder()
+
+            print(self.data)
+
+            if self.right:
+                self.right.listInOrder()
+
+    def search(self, value):
+        current = self
+
+        while True:
+            if current.data != value and current.left is None and current.right is None:
+                return None
+
+            if current.data == value:
+                return current
+
+            if current.data > value:
+                nextNode = current.left
+
+                if nextNode is None:
+                    return None
+
+                current = current.left
+
+            else:
+                nextNode = current.right
+
+                if nextNode is None:
+                    return None
+
+                current = current.right
+
+    def delete(self, value):
+        subTree = self.search(value)
+
+        if subTree is None:
+            return
+
+        ONE_NODE_TREE = subTree.left is None and subTree.right is None
+        if ONE_NODE_TREE:
+            subTree = None
+            return
         
-        result = [node.data]
-        result += preOrder(node.left)
-        result += preOrder(node.right)
-        return result
-
-def inOrder(node: Tree):
-        if not node:
-            return []
+        RIGHT_BRANCH_ONLY = subTree.left is None
+        if RIGHT_BRANCH_ONLY:
+            subTree.data = subTree.right.data
+            subTree.left = subTree.right.left
+            subTree.right = subTree.right.right
+            return
         
-        result += inOrder(node.left)
-        result = [node.data]
-        result += inOrder(node.right)
-        return result
+        ONE_NODE_ON_LEFT_BRANCH = subTree.left.right is None
+        if ONE_NODE_ON_LEFT_BRANCH:
+            subTree.data = subTree.left.data
+            subTree.left = subTree.left.left
+            return
 
-def postOrder(node: Tree):
-    if not node:
-        return []
-    
-    result += postOrder(node.left)
-    result += postOrder(node.right)
-    result = [node.data]
+        aux = subTree.left
+        nextAux = aux.right
 
-test = Tree(1)
-a = Tree(2)
-b = Tree(3)
-c = Tree(4)
-test.right = a
-a.right = b
-b.right = c
-a = []
-d = preOrder(test)
+        while nextAux.right is not None:
+            aux = nextAux
+            nextAux = nextAux.right
+        
+        subTree.data = nextAux.data
+        
+        if nextAux.left is not None:
+            aux.left = nextAux.left
+        
+        aux.right = None
+        return
 
-print(d)
+    def __repr__(self):
+        return str(self.data)
+
+if __name__ == "__main__":
+    tree = BinaryTree(19)
+    tree.insert(10)
+    tree.insert(5)
+    tree.insert(9)
+    tree.insert(7)
+    tree.insert(23)
+    tree.insert(35)
+
+    tree.listInOrder()
+    tree.delete(5)
+    print("---------------------------------")
+    tree.listInOrder()

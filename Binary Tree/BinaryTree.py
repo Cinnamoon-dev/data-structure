@@ -31,35 +31,32 @@ class BinaryTree:
                 current = current.left
 
     def listPreOrder(self):
-        if self.data:
-            print(self.data)
+        print(self.data)
 
-            if self.left:
-                self.left.listInOrder()
+        if self.left:
+            self.left.listInOrder()
 
-            if self.right:
-                self.right.listInOrder()
+        if self.right:
+            self.right.listInOrder()
 
     def listPosOrder(self):
-        if self.data:
-            if self.left:
-                self.left.listInOrder()
+        if self.left:
+            self.left.listInOrder()
 
-            if self.right:
-                self.right.listInOrder()
+        if self.right:
+            self.right.listInOrder()
 
-            print(self.data)
+        print(self.data)
 
     def listInOrder(self):
-        if self.data:
-            if self.left:
-                self.left.listInOrder()
+        if self.left:
+            self.left.listInOrder()
 
-            print(self.data)
+        print(self.data)
 
-            if self.right:
-                self.right.listInOrder()
-
+        if self.right:
+            self.right.listInOrder()
+ 
     def search(self, value):
         current = self
 
@@ -137,7 +134,4 @@ if __name__ == "__main__":
     tree.insert(23)
     tree.insert(35)
 
-    tree.listInOrder()
-    tree.delete(5)
-    print("---------------------------------")
     tree.listInOrder()

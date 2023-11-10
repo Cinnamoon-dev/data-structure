@@ -140,7 +140,6 @@ class BinaryTree:
         else:
             return right_depth + 1
 
-
     def __repr__(self):
         return str(self.data)
 

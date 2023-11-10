@@ -54,12 +54,12 @@ class Stack { // peak = 0, base = n
         let aux: Stack = new Stack(this.data, this.next)
         let counter: number = 0;
 
-        while(aux !== null) {
+        while(aux.next !== null) {
             counter = counter + 1
             aux = aux.next
         }
 
-        return counter
+        return counter + 1
     }
 
     last() {

@@ -122,6 +122,25 @@ class BinaryTree:
         aux.right = None
         return
 
+    def depth(self):
+        if self.left is None and self.right is None:
+            return 0
+
+        left_depth = 0
+        right_depth = 0
+
+        if self.left is not None:
+            left_depth = self.left.depth()
+        
+        if self.right is not None:
+            right_depth = self.right.depth()
+
+        if left_depth > right_depth:
+            return left_depth + 1
+        else:
+            return right_depth + 1
+
+
     def __repr__(self):
         return str(self.data)
 
@@ -133,5 +152,14 @@ if __name__ == "__main__":
     tree.insert(7)
     tree.insert(23)
     tree.insert(35)
+    tree.insert(36)
+    
+    tree.insert(24)
+    tree.insert(25)
+    tree.insert(26)
+    tree.insert(27)
+    tree.insert(28)
+    tree.insert(29)
 
-    tree.listInOrder()
+
+    print(tree.depth())

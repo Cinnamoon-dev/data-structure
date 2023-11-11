@@ -1,8 +1,10 @@
-class BinaryTree:
+import copy
+
+class AVLTree:
     def __init__(self, data=None, left=None, right=None) -> None:
         self.data = data
-        self.left: BinaryTree = left
-        self.right: BinaryTree = right
+        self.left: AVLTree = left
+        self.right: AVLTree = right
 
     def insert(self, data):
         if self.data is None:
@@ -16,7 +18,7 @@ class BinaryTree:
                 nextNode = current.right
 
                 if nextNode is None:
-                    current.right = BinaryTree(data)
+                    current.right = AVLTree(data)
                     return
 
                 current = current.right
@@ -25,7 +27,7 @@ class BinaryTree:
                 nextNode = current.left
 
                 if nextNode is None:
-                    current.left = BinaryTree(data)
+                    current.left = AVLTree(data)
                     return
 
                 current = current.left
@@ -38,20 +40,22 @@ class BinaryTree:
 
     def leftRotation(self):
         newRoot = self.left
-        aux = newRoot.right
+        aux = copy.deepcopy(newRoot.right) 
 
-        newRoot.right = self
-        self.left = aux
-        self = newRoot
+        newRoot.right = AVLTree(self.data, aux)
+        self.data = newRoot.data
+        self.left = newRoot.left
+        self.right = newRoot.right
         return
         
     def rightRotation(self):
         newRoot = self.right
-        aux = newRoot.left
+        aux = copy.deepcopy(newRoot.left)
 
-        newRoot.left = self
-        self.right = aux
-        self = newRoot
+        newRoot.left = AVLTree(self.data, aux)
+        self.data = newRoot.data
+        self.left = newRoot.left
+        self.right = newRoot.right
         return
     
     def doubleRotation(self):
@@ -61,7 +65,7 @@ class BinaryTree:
 
             aux = self.data
             self.data = aux2.data
-            self.left = BinaryTree(aux)
+            self.left = AVLTree(aux)
             self.right.left = None
             return
         
@@ -70,7 +74,7 @@ class BinaryTree:
 
         aux = self.data
         self.data = aux2.data
-        self.right = BinaryTree(aux)
+        self.right = AVLTree(aux)
         self.left.right = None
         return
 
@@ -188,10 +192,10 @@ class BinaryTree:
         return str(self.data)
 
 if __name__ == "__main__":
-    tree = BinaryTree(10)
-    tree.insert(5)
-    tree.insert(9)
-    tree.doubleRotation()
+    tree = AVLTree(10)
+    tree.insert(15)
+    tree.insert(16)
+    tree.rightRotation()
     print(tree)
     print(tree.left)
     print(tree.right)

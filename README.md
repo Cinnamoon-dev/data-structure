@@ -1,2 +1,8 @@
 ## Data Structure
-A simple repository to save my progress while messing aroud with data structures.
+A simple repository to save my progress while messing around with data structures.
+
+### Data Structures Created
+- Stack
+- Queue
+- BinaryTree
+- AVLTree

@@ -32,32 +32,85 @@ class AVLTree:
 
                 current = current.left
 
+    def searchUnbalancedNode(self):
+        # TODO
+        # Create an iterative solution based on search method
+        if (self.balanceFactor() == -2 or self.balanceFactor() == 2) and self.depth() == 2:
+            return self
+
+        if self.left:
+            self.left.searchUnbalancedNode()
+
+        if self.right:
+            self.right.searchUnbalancedNode()
+
+    def insertAVL(self, data):
+        self.insert(data)
+        
+        unbalancedNode = self.searchUnbalancedNode()
+        if unbalancedNode is None:
+            return
+        print(f"unba: {unbalancedNode.data}")
+        print(f"unbaF: {unbalancedNode.balanceFactor()}")
+
+        BalanceFactor = unbalancedNode.balanceFactor()
+    
+        if BalanceFactor == 2:
+            unbalancedNode.rightRotation()
+
+            if unbalancedNode.balanceFactor() == 2:
+                unbalancedNode.leftRightRotation()
+
+            return
+        
+        if BalanceFactor == -2:
+            unbalancedNode.leftRotation()
+
+            if unbalancedNode.balanceFactor == -2:
+                unbalancedNode.rightLeftRotation()
+
+            return
+        
     def balanceFactor(self):
-        left_depth = self.left.depth()
-        right_depth = self.right.depth()
+        left_depth = 0
+        right_depth = 0
+
+        if self.left is not None:
+            left_depth = self.left.depth() + 1
+
+        if self.right is not None:    
+            right_depth = self.right.depth() + 1
 
         return left_depth - right_depth
 
-    def leftRotation(self):
+    def rightRotation(self):
         newRoot = self.left
-        aux = copy.deepcopy(newRoot.right) 
+        newRoot.right = AVLTree(self.data)
 
-        newRoot.right = AVLTree(self.data, aux)
         self.data = newRoot.data
         self.left = newRoot.left
         self.right = newRoot.right
         return
         
-    def rightRotation(self):
+    def leftRotation(self):
         newRoot = self.right
-        aux = copy.deepcopy(newRoot.left)
+        newRoot.left = AVLTree(self.data)
 
-        newRoot.left = AVLTree(self.data, aux)
         self.data = newRoot.data
         self.left = newRoot.left
         self.right = newRoot.right
         return
     
+    def leftRightRotation(self):
+        self.left.leftRotation()
+        self.rightRotation()
+        return
+    
+    def rightLeftRotation(self):
+        self.right.rightRotation()
+        self.leftRotation()
+        return
+
     def doubleRotation(self):
         if self.left is None:
             aux1 = self.right
@@ -130,6 +183,29 @@ class AVLTree:
                     return None
 
                 current = current.right
+    
+    def searchAVL(self, value):
+        current = self
+        BalanceFactor = self.balanceFactor()
+
+        while True:
+            if current.depth() < 2:
+                return None
+
+            if (current.balanceFactor() == -2 or current.balanceFactor() == 2) and current.depth() == 2:
+                return current
+            
+            # CASO POSITIVO
+            if current.left is not None:
+                if current.left.depth() >= 2:
+                    current = current.left
+                    continue
+
+            if current.right is not None:
+                if current.right.depth() >= 2:
+                    current = current.right
+                    continue
+
 
     def delete(self, value):
         subTree = self.search(value)
@@ -193,12 +269,23 @@ class AVLTree:
 
 if __name__ == "__main__":
     tree = AVLTree(10)
-    tree.insert(15)
-    tree.insert(16)
-    tree.rightRotation()
-    print(tree)
-    print(tree.left)
-    print(tree.right)
+    print(15)
+    tree.insertAVL(15)
+    print(16)
+    tree.insertAVL(16)
+    print(14)
+    tree.insertAVL(14)
+    print(11)
+    tree.insertAVL(11)
+
+    print(f"root: {tree.data}")
+    print(f"left: {tree.left}")
+    print(f"right: {tree.right}")
+    print(f"bf: {tree.balanceFactor()}")
+    print(f"depth: {tree.left.depth()}")
+    # print(tree.left)
+    # print(tree.left)
+    # print(tree.right)
     # tree.insert(10)
     # tree.insert(5)
     # tree.insert(9)

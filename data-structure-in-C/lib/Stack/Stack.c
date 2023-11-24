@@ -18,7 +18,7 @@ void push(node** stack, int data) {
 
 void push_array(node** stack, int* array, int size) {
     for(register int i = 0; i < size; i++) {
-        push((*&stack), array[i]);
+        push((&stack), array[i]);
     }
 }
 
@@ -80,7 +80,7 @@ int peak(node* stack) {
 }
 
 bool is_empty(node* stack) {
-    return stack == NULL ? true : false;
+    return stack == NULL;
 }
 
 int length(node* stack) {

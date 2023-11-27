@@ -65,19 +65,19 @@ class AVLTree:
         BalanceFactor = unbalancedNode.balanceFactor()
     
         if BalanceFactor == 2:
-            unbalancedNode.rightRotation()
-
-            if unbalancedNode.balanceFactor() == 2:
+            if unbalancedNode.left.right:
                 unbalancedNode.leftRightRotation()
+                return
 
+            unbalancedNode.rightRotation()
             return
         
         if BalanceFactor == -2:
-            unbalancedNode.leftRotation()
-
-            if unbalancedNode.balanceFactor == -2:
+            if unbalancedNode.right.left:
                 unbalancedNode.rightLeftRotation()
+                return
 
+            unbalancedNode.leftRotation()
             return
         
     def balanceFactor(self):
@@ -274,7 +274,7 @@ if __name__ == "__main__":
     print(f"depth: {tree.depth()}")
 
     print(tree.left.left)
-    print(tree.left.left.left)
+    print(tree.left.right)
     # print(tree.left)
     # print(tree.left)
     # print(tree.right)

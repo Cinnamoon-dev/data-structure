@@ -122,17 +122,17 @@ class AVLTree:
         print(self.data)
 
         if self.left:
-            self.left.listInOrder()
+            self.left.listPreOrder()
 
         if self.right:
-            self.right.listInOrder()
+            self.right.listPreOrder()
 
     def listPosOrder(self):
         if self.left:
-            self.left.listInOrder()
+            self.left.listPosOrder()
 
         if self.right:
-            self.right.listInOrder()
+            self.right.listPosOrder()
 
         print(self.data)
 

@@ -33,16 +33,27 @@ class AVLTree:
                 current = current.left
 
     def searchUnbalancedNode(self):
-        # TODO
-        # Create an iterative solution based on search method
-        if (self.balanceFactor() == -2 or self.balanceFactor() == 2) and self.depth() == 2:
-            return self
+        def checkUnbalancedNode(node: AVLTree):
+            return (node.balanceFactor() == -2 or node.balanceFactor() == 2) and node.depth() == 2
 
-        if self.left:
-            self.left.searchUnbalancedNode()
+        if -2 < self.balanceFactor() < 2:
+            return 
 
-        if self.right:
-            self.right.searchUnbalancedNode()
+        current = self
+
+        while True:
+            if checkUnbalancedNode(current):
+                return current
+            
+            if current.left:
+                if current.left.depth() == current.depth() - 1:
+                    current = current.left
+                    continue
+
+            if current.right:
+                if current.right.depth() == current.depth() - 1:
+                    current = current.right
+                    continue
 
     def insertAVL(self, data):
         self.insert(data)
@@ -50,8 +61,6 @@ class AVLTree:
         unbalancedNode = self.searchUnbalancedNode()
         if unbalancedNode is None:
             return
-        print(f"unba: {unbalancedNode.data}")
-        print(f"unbaF: {unbalancedNode.balanceFactor()}")
 
         BalanceFactor = unbalancedNode.balanceFactor()
     
@@ -109,26 +118,6 @@ class AVLTree:
     def rightLeftRotation(self):
         self.right.rightRotation()
         self.leftRotation()
-        return
-
-    def doubleRotation(self):
-        if self.left is None:
-            aux1 = self.right
-            aux2 = aux1.left
-
-            aux = self.data
-            self.data = aux2.data
-            self.left = AVLTree(aux)
-            self.right.left = None
-            return
-        
-        aux1 = self.left
-        aux2 = aux1.right
-
-        aux = self.data
-        self.data = aux2.data
-        self.right = AVLTree(aux)
-        self.left.right = None
         return
 
     def listPreOrder(self):
@@ -269,20 +258,23 @@ class AVLTree:
 
 if __name__ == "__main__":
     tree = AVLTree(10)
-    print(15)
+    # print(15)
     tree.insertAVL(15)
-    print(16)
+    # print(16)
     tree.insertAVL(16)
-    print(14)
+    # print(14)
     tree.insertAVL(14)
-    print(11)
+    # print(11)
     tree.insertAVL(11)
 
     print(f"root: {tree.data}")
     print(f"left: {tree.left}")
     print(f"right: {tree.right}")
     print(f"bf: {tree.balanceFactor()}")
-    print(f"depth: {tree.left.depth()}")
+    print(f"depth: {tree.depth()}")
+
+    print(tree.left.left)
+    print(tree.left.left.left)
     # print(tree.left)
     # print(tree.left)
     # print(tree.right)

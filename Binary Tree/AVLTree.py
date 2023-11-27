@@ -1,5 +1,3 @@
-import copy
-
 class AVLTree:
     def __init__(self, data=None, left=None, right=None) -> None:
         self.data = data

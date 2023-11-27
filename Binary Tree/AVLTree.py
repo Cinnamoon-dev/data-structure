@@ -32,7 +32,7 @@ class AVLTree:
 
     def searchUnbalancedNode(self):
         def checkUnbalancedNode(node: AVLTree):
-            return (node.balanceFactor() == -2 or node.balanceFactor() == 2) and node.depth() == 2
+            return (node.balanceFactor() == -2 or node.balanceFactor() == 2) and node.depth() == 2 or self.left is None or self.right is None
 
         if -2 < self.balanceFactor() < 2:
             return 

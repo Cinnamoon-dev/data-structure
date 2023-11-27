@@ -172,29 +172,6 @@ class AVLTree:
                     return None
 
                 current = current.right
-    
-    def searchAVL(self, value):
-        current = self
-        BalanceFactor = self.balanceFactor()
-
-        while True:
-            if current.depth() < 2:
-                return None
-
-            if (current.balanceFactor() == -2 or current.balanceFactor() == 2) and current.depth() == 2:
-                return current
-            
-            # CASO POSITIVO
-            if current.left is not None:
-                if current.left.depth() >= 2:
-                    current = current.left
-                    continue
-
-            if current.right is not None:
-                if current.right.depth() >= 2:
-                    current = current.right
-                    continue
-
 
     def delete(self, value):
         subTree = self.search(value)
@@ -258,13 +235,9 @@ class AVLTree:
 
 if __name__ == "__main__":
     tree = AVLTree(10)
-    # print(15)
     tree.insertAVL(15)
-    # print(16)
     tree.insertAVL(16)
-    # print(14)
     tree.insertAVL(14)
-    # print(11)
     tree.insertAVL(11)
 
     print(f"root: {tree.data}")
@@ -272,25 +245,3 @@ if __name__ == "__main__":
     print(f"right: {tree.right}")
     print(f"bf: {tree.balanceFactor()}")
     print(f"depth: {tree.depth()}")
-
-    print(tree.left.left)
-    print(tree.left.right)
-    # print(tree.left)
-    # print(tree.left)
-    # print(tree.right)
-    # tree.insert(10)
-    # tree.insert(5)
-    # tree.insert(9)
-    # tree.insert(7)
-    # tree.insert(23)
-    # tree.insert(35)
-    # tree.insert(36)
-    
-    # tree.insert(24)
-    # tree.insert(25)
-    # tree.insert(26)
-    # tree.insert(27)
-    # tree.insert(28)
-    # tree.insert(29)
-
-    # print(tree.depth())

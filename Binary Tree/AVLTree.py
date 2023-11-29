@@ -5,6 +5,17 @@ class AVLTree:
         self.right: AVLTree = right
 
     def newInsert(self, data):
+        """
+            Inserts the node, the function used to insert returns a "grandpa" subtree (two nodes up)
+            the grandpa subtree is used to check the balance factor after the insertion, as the search
+            for the grandpa subtree occurs during the search for the branch to insert the node it is
+            faster than the normal method (searching the entire tree again, for the unbalanced node).
+
+            It makes sense returning the grandpa node because the balance factor needed to unbalance
+            the tree is 2 or -2 so returning a subtree with the depth of 2 is sufficient to check
+            the balance factor.
+        """
+
         def insert(self, data):
             def checkParentalLeftNode(node, value):
                 leftValue = None
@@ -78,6 +89,14 @@ class AVLTree:
             return
 
     def searchUnbalancedNode(self):
+        """
+            The search for an unbalanced node follows a simple logic. There is an invariant when
+            looking for a unbalanced subtree: this subtree has more 2 nodes in comparison to every
+            other subtree starting from the root. So, when looking for the node you want to descend 
+            the difference in depth of the current node and the next node for the deepest subtree 
+            is exactly 1, but for every other node the difference in depth is 2.
+        """
+
         def checkUnbalancedNode(node: AVLTree):
             return (node.balanceFactor() == -2 or node.balanceFactor() == 2) and node.depth() == 2 or self.left is None or self.right is None
 
@@ -101,6 +120,12 @@ class AVLTree:
                     continue
 
     def insert(self, data):
+        """
+            Inserts the new node, after the insertion it searches for an unbalanced subtree
+            and then rotates the subtree to balance it. It is pretty logical and straightfoward, but
+            it is not the faster method available, check newInsert for upgrades.
+        """
+
         def insert(self, data):
             if self.data is None:
                 self.data = data

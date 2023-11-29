@@ -4,31 +4,78 @@ class AVLTree:
         self.left: AVLTree = left
         self.right: AVLTree = right
 
-    def insert(self, data):
-        if self.data is None:
-            self.data = data
+    def newInsert(self, data):
+        def insert(self, data):
+            def checkParentalLeftNode(node, value):
+                leftValue = None
+                rightValue = None
+
+                if node.left:
+                    if node.left.left:
+                        leftValue = node.left.left.data
+                    
+                    if node.left.right:
+                        rightValue = node.left.right.data
+                return value in [leftValue, rightValue]
+
+            if self.data is None:
+                self.data = data
+                return
+
+            current = self
+
+            grandpa = self
+            count = 1
+
+            while True:
+                if count > 2:
+                    if checkParentalLeftNode(grandpa, current.data):
+                        grandpa = grandpa.left
+                    
+                    grandpa = grandpa.right
+
+                if current.data < data:
+                    count += 1
+                    nextNode = current.right
+
+                    if nextNode is None:
+                        current.right = AVLTree(data)
+                        return grandpa
+
+                    current = current.right
+
+                else:
+                    count += 1
+                    nextNode = current.left
+
+                    if nextNode is None:
+                        current.left = AVLTree(data)
+                        return grandpa
+
+                    current = current.left
+
+        unbalancedNode = insert(self, data)
+
+        if -2 < unbalancedNode.balanceFactor() < 2:
             return
 
-        current = self
+        BalanceFactor = unbalancedNode.balanceFactor()
+    
+        if BalanceFactor == 2:
+            if unbalancedNode.left.right:
+                unbalancedNode.leftRightRotation()
+                return
 
-        while True:
-            if current.data < data:
-                nextNode = current.right
+            unbalancedNode.rightRotation()
+            return
+        
+        if BalanceFactor == -2:
+            if unbalancedNode.right.left:
+                unbalancedNode.rightLeftRotation()
+                return
 
-                if nextNode is None:
-                    current.right = AVLTree(data)
-                    return
-
-                current = current.right
-
-            else:
-                nextNode = current.left
-
-                if nextNode is None:
-                    current.left = AVLTree(data)
-                    return
-
-                current = current.left
+            unbalancedNode.leftRotation()
+            return
 
     def searchUnbalancedNode(self):
         def checkUnbalancedNode(node: AVLTree):
@@ -53,8 +100,34 @@ class AVLTree:
                     current = current.right
                     continue
 
-    def insertAVL(self, data):
-        self.insert(data)
+    def insert(self, data):
+        def insert(self, data):
+            if self.data is None:
+                self.data = data
+                return
+
+            current = self
+
+            while True:
+                if current.data < data:
+                    nextNode = current.right
+
+                    if nextNode is None:
+                        current.right = AVLTree(data)
+                        return
+
+                    current = current.right
+
+                else:
+                    nextNode = current.left
+
+                    if nextNode is None:
+                        current.left = AVLTree(data)
+                        return
+
+                    current = current.left
+        
+        insert(data)
         
         unbalancedNode = self.searchUnbalancedNode()
         if unbalancedNode is None:
@@ -233,10 +306,10 @@ class AVLTree:
 
 if __name__ == "__main__":
     tree = AVLTree(10)
-    tree.insertAVL(15)
-    tree.insertAVL(16)
-    tree.insertAVL(14)
-    tree.insertAVL(11)
+    tree.insert(15)
+    tree.insert(16)
+    tree.insert(14)
+    tree.insert(11)
 
     print(f"root: {tree.data}")
     print(f"left: {tree.left}")

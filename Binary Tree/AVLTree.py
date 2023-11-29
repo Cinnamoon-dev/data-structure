@@ -16,7 +16,7 @@ class AVLTree:
             the balance factor.
         """
 
-        def insert(self, data):
+        def insert(self, data) -> "AVLTree":
             def checkParentalLeftNode(node, value):
                 leftValue = None
                 rightValue = None
@@ -31,7 +31,7 @@ class AVLTree:
 
             if self.data is None:
                 self.data = data
-                return
+                return self
 
             current = self
 
@@ -70,23 +70,7 @@ class AVLTree:
         if -2 < unbalancedNode.balanceFactor() < 2:
             return
 
-        BalanceFactor = unbalancedNode.balanceFactor()
-    
-        if BalanceFactor == 2:
-            if unbalancedNode.left.right:
-                unbalancedNode.leftRightRotation()
-                return
-
-            unbalancedNode.rightRotation()
-            return
-        
-        if BalanceFactor == -2:
-            if unbalancedNode.right.left:
-                unbalancedNode.rightLeftRotation()
-                return
-
-            unbalancedNode.leftRotation()
-            return
+        unbalancedNode.balanceNode()
 
     def searchUnbalancedNode(self):
         """
@@ -119,6 +103,23 @@ class AVLTree:
                     current = current.right
                     continue
 
+    def balanceNode(self):
+        if self.balanceFactor() == 2:
+            if self.left.right:
+                self.leftRightRotation()
+                return
+
+            self.rightRotation()
+            return
+        
+        if self.balanceFactor() == -2:
+            if self.right.left:
+                self.rightLeftRotation()
+                return
+
+            self.leftRotation()
+            return
+
     def insert(self, data):
         """
             Inserts the new node, after the insertion it searches for an unbalanced subtree
@@ -126,7 +127,7 @@ class AVLTree:
             it is not the faster method available, check newInsert for upgrades.
         """
 
-        def insert(self, data):
+        def insert(data):
             if self.data is None:
                 self.data = data
                 return
@@ -158,23 +159,7 @@ class AVLTree:
         if unbalancedNode is None:
             return
 
-        BalanceFactor = unbalancedNode.balanceFactor()
-    
-        if BalanceFactor == 2:
-            if unbalancedNode.left.right:
-                unbalancedNode.leftRightRotation()
-                return
-
-            unbalancedNode.rightRotation()
-            return
-        
-        if BalanceFactor == -2:
-            if unbalancedNode.right.left:
-                unbalancedNode.rightLeftRotation()
-                return
-
-            unbalancedNode.leftRotation()
-            return
+        unbalancedNode.balanceNode()
         
     def balanceFactor(self):
         left_depth = 0

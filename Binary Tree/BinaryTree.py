@@ -83,6 +83,33 @@ class BinaryTree:
 
                 current = current.right
 
+    def search_children(self, value):
+        current = self
+
+        while True:
+            NOT_FOUND = current.left is None and current.right is None
+            if NOT_FOUND:
+                return None
+
+            if current.left.data == value or current.right.data == value:
+                return current
+
+            if current.data > value:
+                nextNode = current.left
+
+                if nextNode is None:
+                    return None
+
+                current = current.left
+
+            else:
+                nextNode = current.right
+
+                if nextNode is None:
+                    return None
+
+                current = current.right
+
     def delete(self, value):
         subTree = self.search(value)
 
@@ -91,7 +118,13 @@ class BinaryTree:
 
         ONE_NODE_TREE = subTree.left is None and subTree.right is None
         if ONE_NODE_TREE:
-            subTree = None
+            parent = self.search_children(value)
+
+            if value > parent.data:
+                parent.right = None
+                return
+            
+            parent.left = None
             return
         
         RIGHT_BRANCH_ONLY = subTree.left is None

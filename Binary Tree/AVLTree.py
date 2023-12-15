@@ -256,6 +256,9 @@ class AVLTree:
                 current = current.right
 
     def search_children(self, value):
+        """
+            Method create to find a parental node of a node
+        """
         current = self
 
         while True:

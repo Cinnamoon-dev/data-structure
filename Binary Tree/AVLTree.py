@@ -286,36 +286,130 @@ class AVLTree:
                 current = current.right
 
     def delete(self, value):
-        subTree = self.search(value)
+        def search(data):
+            def checkParentalLeftNode(node, value):
+                leftValue = None
+                rightValue = None
+
+                if node.left:
+                    if node.left.left:
+                        leftValue = node.left.left.data
+                    
+                    if node.left.right:
+                        rightValue = node.left.right.data
+                return value in [leftValue, rightValue]
+
+            if self.data is None:
+                return None
+
+            current = self
+
+            grandpa = self
+            count = 1
+
+            while True:
+                if current.data == value:
+                    return (current, grandpa)
+
+                if count > 2:
+                    if checkParentalLeftNode(grandpa, current.data):
+                        grandpa = grandpa.left
+                    
+                    grandpa = grandpa.right
+
+                if current.data < data:
+                    count += 1
+                    nextNode = current.right
+
+                    if nextNode is None:
+                        return None
+
+                    current = current.right
+
+                else:
+                    count += 1
+                    nextNode = current.left
+
+                    if nextNode is None:
+                        return None
+
+                    current = current.left
+            
+        def balanceNode(node: AVLTree):
+            if node.left is None:
+                newRoot = node.right
+                aux = newRoot
+
+                while aux.left is not None:
+                    aux = aux.left
+                
+                aux.left = AVLTree(node.data)
+                node.data = newRoot.data
+                node.left = newRoot.left
+                node.right = newRoot.right
+                return
+            
+            newRoot = node.left
+            aux = newRoot
+
+            while aux.right is not None:
+                aux = aux.right
+            
+            aux.right = AVLTree(node.data)
+            node.data = newRoot.data
+            node.left = newRoot.left
+            node.right = newRoot.right
+            return
+
+        subTree = search(value)
 
         if subTree is None:
             return
+        
+        node = subTree[0]
+        grandpa = subTree[1]
 
-        ONE_NODE_TREE = subTree.left is None and subTree.right is None
+        ONE_NODE_TREE = node.left is None and node.right is None
         if ONE_NODE_TREE:
             parent = self.search_children(value)
 
             if value > parent.data:
                 parent.right = None
+
+                if grandpa.balanceFactor() > 1 or grandpa.balanceFactor() < -1:
+                    balanceNode(grandpa)
+
                 return
             
             parent.left = None
+
+            if grandpa.balanceFactor() > 1 or grandpa.balanceFactor() < -1:
+                balanceNode(grandpa)
+
             return
         
-        RIGHT_BRANCH_ONLY = subTree.left is None
+        RIGHT_BRANCH_ONLY = node.left is None
         if RIGHT_BRANCH_ONLY:
-            subTree.data = subTree.right.data
-            subTree.left = subTree.right.left
-            subTree.right = subTree.right.right
+            node.data = node.right.data
+            node.left = node.right.left
+            node.right = node.right.right
+
+            if grandpa.balanceFactor() > 1 or grandpa.balanceFactor() < -1:
+                balanceNode(grandpa)
+
             return
         
-        ONE_NODE_ON_LEFT_BRANCH = subTree.left.right is None
+        ONE_NODE_ON_LEFT_BRANCH = node.left.right is None
         if ONE_NODE_ON_LEFT_BRANCH:
-            subTree.data = subTree.left.data
-            subTree.left = subTree.left.left
+            node.data = node.left.data
+            node.left = node.left.left
+
+            if grandpa.balanceFactor() > 1 or grandpa.balanceFactor() < -1:
+                balanceNode(grandpa)
+
             return
 
-        aux = subTree.left
+        aux = node.left
         nextAux = aux.right
 
         while nextAux.right is not None:
@@ -329,8 +423,9 @@ class AVLTree:
         
         aux.right = None
 
-        unbalancedNode = self.searchUnbalancedNode()
-        unbalancedNode.balanceNode()
+        if grandpa.balanceFactor() > 1 or grandpa.balanceFactor() < -1:
+            balanceNode(grandpa)
+        
         return
 
     def depth(self):
@@ -361,9 +456,7 @@ if __name__ == "__main__":
     tree.insert(14)
     tree.insert(11)
 
-    tree.delete(11)
-    tree.delete(10)
-    tree.delete(14)
+    tree.delete(16)
 
     print(f"root: {tree.data}")
     print(f"left: {tree.left}")
